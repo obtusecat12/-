@@ -427,29 +427,37 @@ export const RetroAd: React.FC<AdProps> = ({ type, variant }) => {
      // Vertical sidebar ads
      if (variant === 1) {
         return (
-           <div className={`w-full h-[120px] bg-[#ffffcc] ${borderStyle} flex flex-col items-center p-1 mb-2 cursor-pointer relative overflow-hidden`}>
-              {/* Corner ribbon */}
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[20px] border-r-[20px] border-t-transparent border-r-red-600"></div>
+           <div className={`w-full ${borderStyle} mb-2 cursor-pointer relative group aspect-[1086/998]`}>
+              {/* Full Background Image */}
+              <img 
+                src="https://i.ibb.co/nNfWqFnf/image.png" 
+                alt="Mobile Ad" 
+                className="w-full h-full object-fill"
+              />
               
-              <div className="text-red-600 font-black text-sm mb-1 blink tracking-widest drop-shadow-sm">特价手机</div>
+              {/* Rogue Ads: Diverse Close Buttons */}
               
-              <div className="border border-gray-400 w-[60px] h-[60px] bg-white mb-1 flex items-center justify-center relative shadow-inner">
-                 {/* Pixel Phone */}
-                 <svg width="24" height="40" viewBox="0 0 12 20" shapeRendering="crispEdges">
-                    <rect x="0" y="0" width="12" height="20" rx="1" fill="#333" />
-                    <rect x="1" y="2" width="10" height="8" fill="#9cd" />
-                    <rect x="1" y="11" width="10" height="8" fill="#555" />
-                    <rect x="2" y="12" width="2" height="2" fill="#fff" />
-                    <rect x="5" y="12" width="2" height="2" fill="#fff" />
-                    <rect x="8" y="12" width="2" height="2" fill="#fff" />
-                 </svg>
-                 <div className="absolute -bottom-1 -right-2 bg-yellow-400 text-red-600 text-[10px] font-bold px-1 border border-red-600 rotate-[-10deg]">
-                    ¥998
-                 </div>
+              {/* Top-Right: Classic Win95 gray box */}
+              <div className="absolute top-[2px] right-[2px] w-4 h-4 bg-[#c0c0c0] border-t border-l border-white border-b border-r border-black flex items-center justify-center text-black font-bold text-[10px] leading-none z-20 select-none active:border-t-black active:border-l-black active:border-b-white active:border-r-white shadow-sm">×</div>
+              
+              {/* Top-Left: Text based "关闭" */}
+              <div className="absolute top-0 left-0 bg-white/90 border border-gray-500 px-1 h-4 flex items-center text-[10px] text-black z-20 hover:text-red-600 font-simsun cursor-pointer">
+                 关闭
               </div>
-              <div className="text-[10px] text-blue-800 text-center leading-3">
-                 <span className="font-bold">NOKIA 8210</span><br/>
-                 <span className="text-gray-500 line-through">原价:1888</span>
+
+              {/* Bottom-Right: Fake Red Warning Close */}
+              <div className="absolute bottom-0 right-0 w-5 h-5 bg-red-600 border border-white text-white font-bold flex items-center justify-center text-xs z-20 hover:bg-red-700">
+                 X
+              </div>
+
+              {/* Bottom-Left: Round Circle Black */}
+              <div className="absolute bottom-0 left-0 w-4 h-4 rounded-full bg-black/80 border border-white flex items-center justify-center text-white text-[9px] z-20 hover:bg-black">
+                 x
+              </div>
+
+              {/* Ad Label - adjusted position */}
+              <div className="absolute bottom-1 left-5 bg-black/40 text-white text-[9px] px-1 backdrop-blur-[1px] select-none z-10 pointer-events-none">
+                广告
               </div>
            </div>
         );
