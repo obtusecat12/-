@@ -3,35 +3,31 @@ import { SITE_NAME, BOARDS, MOCK_THREADS } from './constants';
 import { Board } from './types';
 import { BevelBox, RetroButton, Marquee, PixelIcon, Separator, RetroAd } from './components/RetroUI';
 
-export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'board' | 'thread'>('home');
-  const [activeBoard, setActiveBoard] = useState<Board | null>(null);
-  const [visitCount] = useState(128848);
-  const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
-
+const Clock = () => {
+  const [time, setTime] = useState(new Date().toLocaleString());
+  
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentTime(new Date().toLocaleString());
+      setTime(new Date().toLocaleString());
     }, 1000);
     return () => clearInterval(timer);
   }, []);
 
-  const handleBoardClick = (board: Board) => {
-    setActiveBoard(board);
-    setCurrentView('board');
-    window.scrollTo(0, 0);
-  };
+  return (
+    <BevelBox title="日历 / 时间" icon="calendar" className="text-center text-xs">
+        <div className="bg-white p-1 border border-gray-400 inset-shadow font-mono text-black">
+           {time.split(' ')[0]}<br/>
+           {time.split(' ')[1]}
+        </div>
+    </BevelBox>
+  );
+};
 
-  const goHome = () => {
-    setCurrentView('home');
-    setActiveBoard(null);
-  };
-
-  const Sidebar = () => (
+const Sidebar = () => (
     <div className="w-full md:w-[180px] flex flex-col gap-2 shrink-0">
       
       {/* Login */}
-      <BevelBox title="用户登录">
+      <BevelBox title="用户登录" icon="user">
         <div className="flex flex-col gap-1 text-xs">
           <div className="flex items-center">
             <span className="w-8">ID:</span>
@@ -50,7 +46,7 @@ export default function App() {
 
       {/* Weirdcore Detail: A watching eye in the stats area */}
       {/* Stats */}
-      <BevelBox title="站点统计" className="text-xs leading-4 relative overflow-hidden">
+      <BevelBox title="站点统计" icon="chart" className="text-xs leading-4 relative overflow-hidden">
         <ul className="list-square pl-4 text-gray-800 relative z-10">
            <li>在线: 128人</li>
            <li>最高: 543人</li>
@@ -81,12 +77,7 @@ export default function App() {
       </div>
 
       {/* Calendar */}
-      <BevelBox title="日历 / 时间" className="text-center text-xs">
-        <div className="bg-white p-1 border border-gray-400 inset-shadow font-mono text-black">
-           {currentTime.split(' ')[0]}<br/>
-           {currentTime.split(' ')[1]}
-        </div>
-      </BevelBox>
+      <Clock />
       
       {/* Contact */}
       <div className="border border-black bg-gray-200 p-2 text-xs text-gray-500 text-center relative">
@@ -99,9 +90,9 @@ export default function App() {
       </div>
 
     </div>
-  );
+);
 
-  const TopBanner = () => (
+const TopBanner = () => (
     <div className="mb-2 relative">
       <div className="flex justify-between items-end mb-1 px-1">
         {/* Retro Logo Text Art */}
@@ -129,17 +120,17 @@ export default function App() {
 
       <Marquee text="[公告] 系统将于本周五凌晨进行升级维护，请各位网友注意保存文章。文明上网，自律守法。祝大家千禧年快乐！本站招募各版块版主，有意者请联系管理员。" />
     </div>
-  );
+);
 
-  const Navigation = () => (
+const Navigation = () => (
      <div className="flex gap-[2px] my-2 bg-[#dfdfdf] p-[2px] border-t border-white border-b border-gray-600">
         {['首页', '社区服务', '精华区', '同城交易', '交友中心', '个人服务'].map((item) => (
            <RetroButton key={item} className="px-2 md:px-3">{item}</RetroButton>
         ))}
      </div>
-  );
+);
 
-  const BoardList = () => (
+const BoardList = ({ handleBoardClick }: { handleBoardClick: (board: Board) => void }) => (
     <div className="mb-4">
       {/* Simulated Table Structure */}
       <div className="bg-[#5086b9] text-white px-2 py-1 text-sm font-bold border border-gray-800 flex justify-between items-center bg-gradient-to-r from-[#000080] to-[#5086b9]">
@@ -180,9 +171,9 @@ export default function App() {
         </div>
       </div>
     </div>
-  );
+);
 
-  const ThreadList = ({ filterBoardId }: { filterBoardId?: string }) => {
+const ThreadList = ({ filterBoardId, activeBoard }: { filterBoardId?: string, activeBoard: Board | null }) => {
     const threads = filterBoardId 
       ? MOCK_THREADS.filter(t => t.boardId === filterBoardId)
       : MOCK_THREADS;
@@ -247,23 +238,38 @@ export default function App() {
         </div>
       </div>
     );
-  };
+};
 
-  const FriendLinks = () => (
+const FriendLinks = () => (
      <div className="border border-gray-400 bg-white p-2 mb-4">
-        <div className="text-xs font-bold text-gray-700 mb-1 border-b border-gray-300 pb-1">友情链接</div>
+        <div className="text-xs font-bold text-gray-700 mb-1 border-b border-gray-300 pb-1 flex items-center gap-1">
+          <PixelIcon type="link" />
+          友情链接
+        </div>
         <div className="flex flex-wrap gap-2">
-           <div className="w-[88px] h-[31px] bg-black text-white text-[10px] flex items-center justify-center border border-gray-600 cursor-pointer hover:opacity-80">网易 163</div>
-           <div className="w-[88px] h-[31px] bg-[#ff9900] text-white text-[10px] flex items-center justify-center border border-gray-600 cursor-pointer hover:opacity-80">Sina 新浪</div>
-           <div className="w-[88px] h-[31px] bg-blue-800 text-white text-[10px] flex items-center justify-center border border-gray-600 cursor-pointer hover:opacity-80">Chinaren</div>
-           <div className="w-[88px] h-[31px] bg-purple-800 text-white text-[10px] flex items-center justify-center border border-gray-600 cursor-pointer hover:opacity-80">碧海银沙</div>
+           <div className="w-[88px] h-[31px] bg-black text-white text-[10px] flex items-center justify-center border border-gray-600 cursor-pointer hover:opacity-80 gap-1">
+              <PixelIcon type="netease" />
+              网易 163
+           </div>
+           <div className="w-[88px] h-[31px] bg-[#ff9900] text-white text-[10px] flex items-center justify-center border border-gray-600 cursor-pointer hover:opacity-80 gap-1">
+              <PixelIcon type="sina" />
+              Sina 新浪
+           </div>
+           <div className="w-[88px] h-[31px] bg-blue-800 text-white text-[10px] flex items-center justify-center border border-gray-600 cursor-pointer hover:opacity-80 gap-1">
+              <PixelIcon type="chinaren" />
+              Chinaren
+           </div>
+           <div className="w-[88px] h-[31px] bg-purple-800 text-white text-[10px] flex items-center justify-center border border-gray-600 cursor-pointer hover:opacity-80 gap-1">
+              <PixelIcon type="bhys" />
+              碧海银沙
+           </div>
            <RetroAd type="button" variant={1} />
            <RetroAd type="button" variant={2} />
         </div>
      </div>
-  );
+);
 
-  const Footer = () => (
+const Footer = ({ visitCount }: { visitCount: number }) => (
     <div className="text-center text-xs text-gray-600 mt-6 border-t border-gray-400 pt-2 pb-8 relative">
       <p>免责声明：本站所有内容均来自互联网，版权归原作者所有。</p>
       <p>Copyright &copy; 2000 {SITE_NAME} All Rights Reserved.</p>
@@ -276,7 +282,23 @@ export default function App() {
           <PixelIcon type="eye" />
       </div>
     </div>
-  );
+);
+
+export default function App() {
+  const [currentView, setCurrentView] = useState<'home' | 'board' | 'thread'>('home');
+  const [activeBoard, setActiveBoard] = useState<Board | null>(null);
+  const [visitCount] = useState(128848);
+
+  const handleBoardClick = (board: Board) => {
+    setActiveBoard(board);
+    setCurrentView('board');
+    window.scrollTo(0, 0);
+  };
+
+  const goHome = () => {
+    setCurrentView('home');
+    setActiveBoard(null);
+  };
 
   return (
     <div className="max-w-[960px] mx-auto p-[4px] bg-[#cccccc] min-h-screen shadow-2xl border-l border-r border-white relative">
@@ -308,6 +330,7 @@ export default function App() {
                       <b>[热门]</b> 关于举办“新世纪杯”网友征文大赛的通知
                     </div>
                     <div className="flex items-center gap-1">
+                       <PixelIcon type="speaker" />
                        <b className="text-blue-800">[广告]</b> <span className="underline cursor-pointer hover:text-red-600">极速网吧新开业，会员充100送50！</span>
                     </div>
                  </div>
@@ -317,11 +340,11 @@ export default function App() {
                    <RetroAd type="banner" variant={2} />
                  </div>
 
-                 <BoardList />
+                 <BoardList handleBoardClick={handleBoardClick} />
                </>
              )}
 
-             <ThreadList filterBoardId={activeBoard?.id} />
+             <ThreadList filterBoardId={activeBoard?.id} activeBoard={activeBoard} />
 
              {currentView === 'home' && <FriendLinks />}
           </div>
@@ -336,7 +359,7 @@ export default function App() {
           </div>
         </div>
 
-        <Footer />
+        <Footer visitCount={visitCount} />
       </div>
     </div>
   );

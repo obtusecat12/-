@@ -6,13 +6,17 @@ export const BevelBox: React.FC<{
   className?: string;
   inset?: boolean;
   title?: string;
-}> = ({ children, className = "", inset = false, title }) => {
+  icon?: string;
+}> = ({ children, className = "", inset = false, title, icon }) => {
   // If title is provided, it renders like a Windows 98 window
   if (title) {
     return (
       <div className={`bg-[#c0c0c0] border-t-2 border-l-2 border-white border-b-2 border-r-2 border-gray-600 p-[2px] ${className}`}>
         <div className="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-1 py-[1px] font-bold text-xs flex justify-between items-center select-none mb-1">
-          <span>{title}</span>
+          <div className="flex items-center gap-1">
+            {icon && <PixelIcon type={icon} />}
+            <span>{title}</span>
+          </div>
           <div className="flex gap-[2px]">
             <button className="w-[14px] h-[12px] bg-[#c0c0c0] border border-white border-b-gray-600 border-r-gray-600 leading-[8px] text-[8px] text-black shadow-[inset_1px_1px_0_#fff]">_</button>
             <button className="w-[14px] h-[12px] bg-[#c0c0c0] border border-white border-b-gray-600 border-r-gray-600 leading-[8px] text-[8px] text-black shadow-[inset_1px_1px_0_#fff]">×</button>
@@ -131,6 +135,119 @@ export const PixelIcon: React.FC<{ type: string, className?: string }> = ({ type
     );
   }
 
+  // --- New Icons ---
+
+  if (type === 'user') {
+    return (
+      <svg width="12" height="12" viewBox="0 0 12 12" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+        <path d="M4 1 h4 v3 h-4 z M2 5 h8 v7 h-8 z" fill="#fff" />
+        <rect x="3" y="2" width="6" height="5" fill="#fff" fillOpacity="0.5" /> 
+        {/* Simple face features */}
+        <rect x="5" y="3" width="1" height="1" fill="#000" />
+        <rect x="7" y="3" width="1" height="1" fill="#000" />
+        <rect x="5" y="5" width="3" height="1" fill="#000" />
+      </svg>
+    );
+  }
+
+  if (type === 'chart') {
+    return (
+      <svg width="12" height="12" viewBox="0 0 12 12" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+         <rect x="1" y="6" width="2" height="5" fill="#fff" />
+         <rect x="5" y="3" width="2" height="8" fill="#fff" />
+         <rect x="9" y="1" width="2" height="10" fill="#ffff00" />
+      </svg>
+    );
+  }
+
+  if (type === 'calendar') {
+     return (
+       <svg width="13" height="13" viewBox="0 0 13 13" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+         <path d="M2 2 h9 v10 h-9 z" fill="white" />
+         <rect x="2" y="2" width="9" height="3" fill="#800000" />
+         <rect x="3" y="1" width="1" height="2" fill="#fff" />
+         <rect x="9" y="1" width="1" height="2" fill="#fff" />
+         <g fill="#000">
+            <rect x="4" y="7" width="1" height="1" />
+            <rect x="6" y="7" width="1" height="1" />
+            <rect x="8" y="7" width="1" height="1" />
+            <rect x="4" y="9" width="1" height="1" />
+            <rect x="6" y="9" width="1" height="1" />
+         </g>
+       </svg>
+     );
+  }
+
+  if (type === 'link') {
+      return (
+        <svg width="14" height="12" viewBox="0 0 14 12" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+            <path d="M2 6 a4 4 0 0 1 4 -4 h2" fill="none" stroke="#666" strokeWidth="2" />
+            <path d="M12 6 a4 4 0 0 1 -4 4 h-2" fill="none" stroke="#666" strokeWidth="2" />
+            <line x1="4" y1="6" x2="10" y2="6" stroke="#666" strokeWidth="2" />
+        </svg>
+      );
+  }
+
+  if (type === 'speaker') {
+     return (
+        <svg width="12" height="12" viewBox="0 0 12 12" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+           <path d="M1 4 h3 l3 -3 v10 l-3 -3 h-3 z" fill="#000080" />
+           <path d="M9 4 q2 2 0 4" stroke="#000080" fill="none" />
+        </svg>
+     );
+  }
+
+  if (type === 'heart') {
+     return (
+        <svg width="12" height="12" viewBox="0 0 12 11" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+           <path d="M2 0 h3 l1 1 l1 -1 h3 v3 l-1 1 l-1 1 l-2 2 l-1 1 l-1 -1 l-2 -2 l-1 -1 l-1 -1 v-3 z" fill="#ff0000" stroke="#800000" strokeWidth="0.5" />
+           <rect x="3" y="1" width="1" height="1" fill="white" fillOpacity="0.7" />
+        </svg>
+     );
+  }
+
+  // --- Brand Icons ---
+  if (type === 'netease') {
+    return (
+      <svg width="13" height="13" viewBox="0 0 13 13" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+        <rect width="13" height="13" fill="#d32f2f" rx="1" />
+        <path d="M3 3 v7 l7 -7 v7" stroke="white" strokeWidth="1.5" fill="none" />
+      </svg>
+    );
+  }
+
+  if (type === 'sina') {
+    return (
+      <svg width="13" height="13" viewBox="0 0 13 13" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+         <circle cx="6.5" cy="6.5" r="5.5" fill="white" />
+         <path d="M2 6.5 Q 6.5 1 11 6.5 Q 6.5 12 2 6.5" fill="black" />
+         <circle cx="6.5" cy="6.5" r="2.5" fill="white" />
+         <circle cx="7.5" cy="6" r="1" fill="black" />
+      </svg>
+    );
+  }
+
+  if (type === 'chinaren') {
+     return (
+        <svg width="13" height="13" viewBox="0 0 13 13" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+            <rect width="13" height="13" fill="#4caf50" rx="1" />
+            <path d="M9 4 h-4 v2 h3 v2 h-3 v2 h4" stroke="white" strokeWidth="1.5" fill="none" />
+            <path d="M3 4 v6" stroke="white" strokeWidth="1.5" fill="none" />
+        </svg>
+     );
+  }
+
+  if (type === 'bhys') {
+     return (
+        <svg width="13" height="13" viewBox="0 0 13 13" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+           <rect width="13" height="13" fill="#1e88e5" rx="1" />
+           <path d="M2 10 q 2 -3 4 0 t 5 0" stroke="white" strokeWidth="1.5" fill="none" />
+           <path d="M2 7 q 2 -3 4 0 t 5 0" stroke="white" strokeWidth="1.5" fill="none" />
+           <circle cx="9" cy="4" r="2" fill="#fff59d" />
+        </svg>
+     );
+  }
+
   return <span className="w-4 h-4 bg-gray-400 inline-block"></span>;
 };
 
@@ -140,12 +257,6 @@ export const Marquee: React.FC<{ text: string }> = ({ text }) => {
       <div className="inline-block animate-[marquee_15s_linear_infinite] min-w-full pl-[100%]">
         {text}
       </div>
-      <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-100%); }
-        }
-      `}</style>
     </div>
   );
 };
@@ -343,16 +454,47 @@ export const RetroAd: React.FC<AdProps> = ({ type, variant }) => {
            </div>
         );
      }
+     
+     // Dating Club Ad - Revamped for high contrast Y2K look
      if (variant === 2) {
         return (
-           <div className={`w-full bg-pink-100 ${borderStyle} p-1 mb-2 text-center cursor-pointer`}>
-              <div className="text-[#ff00ff] font-bold text-sm blink drop-shadow-sm">交友俱乐部</div>
-              <div className="text-xs text-gray-800 mt-1 leading-4">
-                 寻找你的<br/><span className="text-blue-600 font-bold">轻舞飞扬</span>
-              </div>
-              <div className="mt-2 text-[9px] grid grid-cols-2 gap-1 px-2">
-                 <div className="bg-white border border-pink-400">美眉</div>
-                 <div className="bg-white border border-blue-400">帅哥</div>
+           <div className={`w-full bg-gradient-to-b from-[#d5006d] to-[#800080] ${borderStyle} p-1 mb-2 text-center cursor-pointer relative overflow-hidden group`}>
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '8px 8px' }}></div>
+              
+              <div className="relative z-10">
+                  <div className="bg-white/20 backdrop-blur-[1px] border border-white/50 mx-2 mt-1 mb-1 p-1 shadow-md">
+                      <div className="text-[#ffff00] font-black text-sm blink drop-shadow-[1px_1px_0_#000]">
+                         ★ 交友俱乐部 ★
+                      </div>
+                  </div>
+                  
+                  <div className="text-xs text-white font-bold leading-4 drop-shadow-md my-2">
+                     <span className="text-cyan-200">缘分</span>天空<br/>
+                     寻找你的 <span className="text-[#ffff00] border-b border-[#ffff00]">轻舞飞扬</span>
+                  </div>
+                  
+                  <div className="flex justify-center gap-2 mt-1 mb-2">
+                     <div className="animate-bounce">
+                        <PixelIcon type="heart" />
+                     </div>
+                     <div className="text-[10px] text-white bg-red-600 px-1 border border-white rotate-[-5deg] shadow-lg flex items-center gap-1">
+                        <span className="w-1 h-1 bg-green-400 inline-block animate-pulse"></span>
+                        100% 真实
+                     </div>
+                     <div className="animate-bounce" style={{ animationDelay: '0.1s' }}>
+                        <PixelIcon type="heart" />
+                     </div>
+                  </div>
+
+                  <div className="mt-1 text-[10px] grid grid-cols-2 gap-2 px-1">
+                     <button className="bg-gradient-to-b from-pink-200 to-pink-400 border-t border-l border-white border-b border-r border-pink-800 text-pink-900 font-bold py-1 shadow active:translate-y-[1px] active:border-t-pink-800">
+                        我是MM
+                     </button>
+                     <button className="bg-gradient-to-b from-cyan-200 to-cyan-400 border-t border-l border-white border-b border-r border-cyan-800 text-cyan-900 font-bold py-1 shadow active:translate-y-[1px] active:border-t-cyan-800">
+                        我是GG
+                     </button>
+                  </div>
               </div>
            </div>
         );
