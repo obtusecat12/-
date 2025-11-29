@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>沔阳论坛网 - Mianyang BBS 2000 - 网友之家</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Retro Windows 9X / 2000 Scrollbar */
+      ::-webkit-scrollbar {
+        width: 16px;
+        height: 16px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #dfdfdf;
+        border-left: 1px solid white;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #c0c0c0;
+        border-top: 1px solid #ffffff;
+        border-left: 1px solid #ffffff;
+        border-right: 1px solid #404040;
+        border-bottom: 1px solid #404040;
+        box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
+      }
+      ::-webkit-scrollbar-button {
+        background: #c0c0c0;
+        border-top: 1px solid #ffffff;
+        border-left: 1px solid #ffffff;
+        border-right: 1px solid #404040;
+        border-bottom: 1px solid #404040;
+        width: 16px;
+        height: 16px;
+        box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
+      }
+
+      body {
+        background-color: #87CEEB; /* Sky Blue base */
+        /* User provided background image - Direct Link */
+        background-image: url('https://i.ibb.co/jZsb5V6L/yupp-generated-image-293314.png');
+        background-repeat: repeat;
+        font-family: "SimSun", "宋体", "Courier New", monospace;
+        font-size: 12px;
+        image-rendering: pixelated;
+        margin: 0;
+        padding: 0;
+        cursor: crosshair; /* Weirdcore: Crosshair cursor */
+        min-height: 100vh;
+      }
+      
+      /* Vignette Overlay for Liminal Atmosphere */
+      body::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        box-shadow: inset 0 0 150px rgba(0,0,0,0.5);
+        pointer-events: none;
+        z-index: 9999;
+      }
+
+      /* Links - The classic blue/purple/red trio */
+      a { color: #000080; text-decoration: none; }
+      a:visited { color: #000080; }
+      a:hover { color: #FF0000; text-decoration: underline; cursor: help; }
+      a:active { color: #FF0000; }
+      
+      /* Utilities for retro aesthetics */
+      .font-simsun { font-family: "SimSun", "宋体", serif; }
+      .pixel-text { text-shadow: none; -webkit-font-smoothing: none; }
+      
+      .blink {
+        animation: blinker 1s linear infinite;
+      }
+      @keyframes blinker {
+        50% { opacity: 0; }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

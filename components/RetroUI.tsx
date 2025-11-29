@@ -1,0 +1,356 @@
+import React from 'react';
+
+// A retro container simulating a table cell or windows frame
+export const BevelBox: React.FC<{ 
+  children: React.ReactNode; 
+  className?: string;
+  inset?: boolean;
+  title?: string;
+}> = ({ children, className = "", inset = false, title }) => {
+  // If title is provided, it renders like a Windows 98 window
+  if (title) {
+    return (
+      <div className={`bg-[#c0c0c0] border-t-2 border-l-2 border-white border-b-2 border-r-2 border-gray-600 p-[2px] ${className}`}>
+        <div className="bg-gradient-to-r from-[#000080] to-[#1084d0] text-white px-1 py-[1px] font-bold text-xs flex justify-between items-center select-none mb-1">
+          <span>{title}</span>
+          <div className="flex gap-[2px]">
+            <button className="w-[14px] h-[12px] bg-[#c0c0c0] border border-white border-b-gray-600 border-r-gray-600 leading-[8px] text-[8px] text-black shadow-[inset_1px_1px_0_#fff]">_</button>
+            <button className="w-[14px] h-[12px] bg-[#c0c0c0] border border-white border-b-gray-600 border-r-gray-600 leading-[8px] text-[8px] text-black shadow-[inset_1px_1px_0_#fff]">×</button>
+          </div>
+        </div>
+        <div className="border border-gray-400 p-1 bg-[#dfdfdf]">
+          {children}
+        </div>
+      </div>
+    );
+  }
+
+  // Standard Bevel
+  return (
+    <div className={`
+      ${inset 
+        ? 'border-t-[#808080] border-l-[#808080] border-b-white border-r-white border-2' 
+        : 'border-t-white border-l-white border-b-[#808080] border-r-[#808080] border-2 bg-[#c0c0c0]'}
+      ${className}
+    `}>
+      {children}
+    </div>
+  );
+};
+
+export const RetroButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ children, className = "", ...props }) => {
+  return (
+    <button 
+      className={`
+        px-2 py-0
+        border-t-2 border-l-2 border-t-white border-l-white 
+        border-r-2 border-b-2 border-r-[#404040] border-b-[#404040]
+        bg-[#c0c0c0] 
+        active:border-t-[#404040] active:border-l-[#404040] active:border-r-white active:border-b-white 
+        text-xs font-simsun select-none active:translate-y-[1px]
+        text-black
+        ${className}
+      `}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+};
+
+// CSS-based Pixel Art Icons to replace Emojis
+export const PixelIcon: React.FC<{ type: string, className?: string }> = ({ type, className = "" }) => {
+  const commonStyle = "inline-block align-middle select-none";
+  
+  // Folder icon
+  if (type === 'folder' || type === 'chat' || type === 'ghost' || type === 'market' || type === 'tech' || type === 'music') {
+    return (
+      <svg width="15" height="13" viewBox="0 0 15 13" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+        <path d="M0 2 h4 l2 2 h9 v9 h-15 z" fill="#ffd700" stroke="#8b4513" strokeWidth="1" />
+        <rect x="1" y="3" width="13" height="1" fill="#fff" fillOpacity="0.5" />
+      </svg>
+    );
+  }
+
+  if (type === 'new') {
+    return (
+        <span className="inline-flex px-1 h-[12px] bg-red-600 text-white text-[9px] font-bold items-center justify-center border border-white blink shadow-sm">
+            NEW
+        </span>
+    );
+  }
+  
+  if (type === 'hot') {
+    return (
+       <svg width="12" height="12" viewBox="0 0 10 10" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+           <path d="M5 0 L2 4 L4 4 L3 7 L8 3 L6 3 L7 0 Z" fill="red" stroke="yellow" strokeWidth="0.5" />
+       </svg>
+    );
+  }
+
+  if (type === 'fire') {
+      return (
+        <svg width="10" height="10" viewBox="0 0 10 10" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+            <path d="M2 9 h6 v-1 h1 v-2 h-1 v-1 h-1 v-1 h-1 v-2 h-1 v2 h-1 v1 h-1 v1 h-1 v2 h1 z" fill="red" />
+            <path d="M4 9 h2 v-1 h1 v-2 h-1 v1 h-1 v-2 h-1 v2 h-1 v-1 h-1 v2 h1 z" fill="yellow" />
+        </svg>
+      );
+  }
+
+  if (type === 'sticky') {
+    return (
+      <svg width="12" height="12" viewBox="0 0 12 12" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+         <rect x="3" y="2" width="6" height="8" fill="#fff" stroke="blue" strokeWidth="1" />
+         <path d="M2 2 h8" stroke="red" strokeWidth="1" />
+         <path d="M4 1 v2" stroke="red" strokeWidth="1" />
+         <path d="M8 1 v2" stroke="red" strokeWidth="1" />
+      </svg>
+    );
+  }
+
+  if (type === 'file') {
+     return (
+        <svg width="11" height="13" viewBox="0 0 11 13" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+          <path d="M1 1 h6 l3 3 v8 h-9 z" fill="white" stroke="#555" strokeWidth="1"/>
+          <path d="M7 1 v3 h3" fill="none" stroke="#555" strokeWidth="1"/>
+          <line x1="3" y1="5" x2="8" y2="5" stroke="#ccc" />
+          <line x1="3" y1="7" x2="8" y2="7" stroke="#ccc" />
+          <line x1="3" y1="9" x2="6" y2="9" stroke="#ccc" />
+        </svg>
+     );
+  }
+  
+  // Weirdcore Eye Icon
+  if (type === 'eye') {
+    return (
+      <svg width="16" height="16" viewBox="0 0 16 16" className={`${commonStyle} ${className}`} shapeRendering="crispEdges">
+        <path d="M2 8 C2 8 5 4 8 4 C11 4 14 8 14 8 C14 8 11 12 8 12 C5 12 2 8 2 8 Z" fill="white" stroke="black" strokeWidth="1"/>
+        <circle cx="8" cy="8" r="3" fill="black" />
+        <circle cx="9" cy="7" r="1" fill="white" />
+      </svg>
+    );
+  }
+
+  return <span className="w-4 h-4 bg-gray-400 inline-block"></span>;
+};
+
+export const Marquee: React.FC<{ text: string }> = ({ text }) => {
+  return (
+    <div className="bg-[#000080] text-[#ffff00] font-simsun text-xs py-1 px-2 border-2 border-inset border-gray-400 overflow-hidden whitespace-nowrap">
+      <div className="inline-block animate-[marquee_15s_linear_infinite] min-w-full pl-[100%]">
+        {text}
+      </div>
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-100%); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export const Separator = () => (
+    <div className="border-t border-[#808080] border-b border-white h-[2px] w-full my-2"></div>
+);
+
+// New Retro Ad Component
+interface AdProps {
+  type: 'banner' | 'sidebar' | 'button' | 'grid' | 'ranking';
+  variant: 1 | 2 | 3;
+}
+
+export const RetroAd: React.FC<AdProps> = ({ type, variant }) => {
+  const borderStyle = "border-t-2 border-l-2 border-white border-b-2 border-r-2 border-black";
+  
+  if (type === 'banner') {
+    // 468x60 Banner
+    if (variant === 1) {
+      // Legend of Mir style ad - Updated with image and better styling
+      return (
+        <div className={`w-full h-[60px] relative flex items-center justify-between px-2 cursor-pointer overflow-hidden group border-2 border-[#5a5a5a] bg-black`}>
+          {/* Background Image */}
+          <img 
+            src="https://i.ibb.co/sdJqLLv7/image.png" 
+            alt="Legend Banner" 
+            className="absolute inset-0 w-full h-full object-cover opacity-90"
+          />
+          
+          {/* Vignette/Gradient to make text pop */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80 z-0"></div>
+
+          <div className="z-10 flex-1 flex flex-col items-center justify-center pl-4">
+             <div className="flex items-end gap-2 leading-none transform skew-x-[-5deg]">
+                <span className="text-xl font-black text-[#f1c40f] tracking-tighter drop-shadow-[2px_2px_0_#000]" style={{ fontFamily: "serif" }}>
+                  热血传奇
+                </span>
+                <span className="text-3xl font-black text-[#e74c3c] tracking-widest" style={{ textShadow: "2px 2px 0 #000, 0 0 10px #ff0000", fontFamily: "serif" }}>
+                  屠龙宝刀
+                </span>
+             </div>
+             <div className="text-white text-[10px] font-bold mt-1 tracking-wider bg-black/60 px-2 rounded-full border border-gray-600 backdrop-blur-sm">
+                <span className="text-[#00ff00] animate-pulse">●</span> <span className="text-white">点击就送</span> <span className="text-yellow-300">麻痹戒指</span> + <span className="text-cyan-300">裁决</span>
+             </div>
+          </div>
+          
+          <div className="z-10 ml-2">
+             <button className="bg-gradient-to-b from-[#fcd275] to-[#b78824] border-t-2 border-l-2 border-[#ffeebb] border-b-2 border-r-2 border-[#684606] text-[#421C02] text-xs font-black px-3 py-1 shadow-lg hover:brightness-110 active:border-t-[#684606] active:border-l-[#684606] active:border-b-[#ffeebb] active:border-r-[#ffeebb] active:translate-y-[1px]">
+                进入游戏 &gt;&gt;
+             </button>
+          </div>
+        </div>
+      );
+    }
+    return (
+       <div className={`w-full h-[60px] bg-[#000080] ${borderStyle} flex items-center justify-between px-4 cursor-pointer overflow-hidden relative`}>
+          {/* Scrolling text background */}
+          <div className="absolute top-1 left-0 text-[#ffffff10] text-[40px] font-bold leading-none select-none whitespace-nowrap">
+             SCHOOL SCHOOL SCHOOL
+          </div>
+          <div className="z-10 text-white font-bold text-lg drop-shadow-md">
+             <span className="text-[#ffff00]">仙桃电脑培训</span>
+             <span className="text-sm block font-normal text-cyan-300">五笔 / 办公 / 网页三剑客</span>
+          </div>
+          <div className="z-10 bg-red-600 text-white border border-white px-2 py-1 text-xs blink shadow-lg">
+             包教包会
+          </div>
+       </div>
+    );
+  }
+
+  if (type === 'grid') {
+      // 2x3 Grid Ad - Industrial / Medical style
+      return (
+          <div className="border border-gray-500 bg-[#fff5ee] mb-2 text-xs">
+             <div className="bg-[#cc0000] text-white text-center font-bold py-[2px] border-b border-gray-500 flex justify-between px-2">
+                <span>商家推荐</span>
+                <span className="font-normal text-[10px] text-yellow-200">广告招租</span>
+             </div>
+             <div className="grid grid-cols-2 gap-[1px] bg-gray-400 border border-gray-400">
+                {[
+                  { title: "老中医", sub: "疑难杂症", color: "text-[#000080]", icon: "medical" },
+                  { title: "挖掘机", sub: "山东蓝翔", color: "text-[#ff0000]", icon: "digger" },
+                  { title: "增高药", sub: "无效退款", color: "text-green-800", icon: "pill" },
+                  { title: "办证刻章", sub: "138xxx", color: "text-purple-800", icon: "stamp" },
+                  { title: "不孕不育", sub: "送子观音", color: "text-red-600", icon: "baby" },
+                  { title: "美容美发", sub: "洗剪吹5元", color: "text-pink-600", icon: "hair" }
+                ].map((item, i) => (
+                  <div key={i} className="bg-white p-1 flex gap-1 cursor-pointer hover:bg-[#ffffe0]">
+                      <div className="w-[32px] h-[32px] border border-gray-300 shrink-0 bg-gray-100 flex items-center justify-center overflow-hidden">
+                         {/* Simple Pixel Art Placeholders */}
+                         {item.icon === 'medical' && <svg width="20" height="20" viewBox="0 0 10 10"><path d="M4 1 h2 v3 h3 v2 h-3 v3 h-2 v-3 h-3 v-2 h3 z" fill="red"/></svg>}
+                         {item.icon === 'digger' && <svg width="24" height="20" viewBox="0 0 12 10"><path d="M0 8 h12 v2 h-12 z M2 5 h6 v3 h-6 z M6 2 l4 3" fill="orange" stroke="black" strokeWidth="1"/></svg>}
+                         {item.icon === 'pill' && <svg width="20" height="20" viewBox="0 0 10 10"><rect x="3" y="1" width="4" height="8" rx="2" fill="blue"/><rect x="3" y="1" width="4" height="4" rx="2" fill="white"/></svg>}
+                         {item.icon === 'stamp' && <svg width="20" height="20" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="red"/><text x="2" y="7" fontSize="5" fill="red">章</text></svg>}
+                         {item.icon === 'baby' && <svg width="20" height="20" viewBox="0 0 10 10"><circle cx="5" cy="3" r="2" fill="pink"/><path d="M2 9 q3 -5 6 0" stroke="pink" fill="none"/></svg>}
+                         {item.icon === 'hair' && <svg width="20" height="20" viewBox="0 0 10 10"><path d="M2 2 q3 -2 6 0 v5 h-6 z" fill="black"/></svg>}
+                      </div>
+                      <div className="flex flex-col justify-center leading-3 overflow-hidden">
+                         <span className={`font-bold ${item.color} truncate`}>{item.title}</span>
+                         <span className="text-gray-500 scale-90 origin-left truncate">{item.sub}</span>
+                      </div>
+                  </div>
+                ))}
+             </div>
+          </div>
+      )
+  }
+
+  if (type === 'ranking') {
+      // Search Ranking Ad
+      return (
+          <div className="bg-white border border-gray-400 mb-2">
+             <div className="bg-[#e0e0e0] border-b border-white px-2 py-1 text-xs text-black shadow-[inset_1px_1px_0_#fff]">
+                <div className="flex items-center gap-1 font-bold">
+                  <PixelIcon type="fire" />
+                  <span>热门搜索榜</span>
+                </div>
+             </div>
+             <ul className="text-xs leading-4 bg-white border-l border-gray-400 border-r border-white border-b border-white">
+                {[
+                    {text: "流星花园全集", count: 9822, hot: true},
+                    {text: "传奇私服外挂", count: 8541, hot: true},
+                    {text: "Flash动画下载", count: 6203},
+                    {text: "免费个人主页", count: 5122},
+                    {text: "周杰伦 龙卷风", count: 4331},
+                    {text: "OICQ 聊天室", count: 3201},
+                    {text: "windows优化大师", count: 2100},
+                    {text: "瑞星杀毒", count: 1899}
+                ].map((item, idx) => (
+                    <li key={idx} className="cursor-pointer hover:bg-[#000080] hover:text-white group flex justify-between items-center px-1 py-[2px] border-b border-dotted border-gray-200">
+                        <div className="truncate w-[100px]">
+                            <span className={`inline-block w-3 text-center mr-1 font-mono ${idx < 3 ? 'text-red-600 font-bold group-hover:text-white' : 'text-gray-500 group-hover:text-gray-300'}`}>{idx + 1}.</span>
+                            <span className={idx < 2 ? 'text-red-600 group-hover:text-white' : 'text-blue-900 group-hover:text-white'}>{item.text}</span>
+                        </div>
+                        <span className="text-[9px] text-gray-400 font-mono group-hover:text-yellow-200">{item.count}</span>
+                    </li>
+                ))}
+             </ul>
+          </div>
+      )
+  }
+
+  if (type === 'sidebar') {
+     // Vertical sidebar ads
+     if (variant === 1) {
+        return (
+           <div className={`w-full h-[120px] bg-[#ffffcc] ${borderStyle} flex flex-col items-center p-1 mb-2 cursor-pointer relative overflow-hidden`}>
+              {/* Corner ribbon */}
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[20px] border-r-[20px] border-t-transparent border-r-red-600"></div>
+              
+              <div className="text-red-600 font-black text-sm mb-1 blink tracking-widest drop-shadow-sm">特价手机</div>
+              
+              <div className="border border-gray-400 w-[60px] h-[60px] bg-white mb-1 flex items-center justify-center relative shadow-inner">
+                 {/* Pixel Phone */}
+                 <svg width="24" height="40" viewBox="0 0 12 20" shapeRendering="crispEdges">
+                    <rect x="0" y="0" width="12" height="20" rx="1" fill="#333" />
+                    <rect x="1" y="2" width="10" height="8" fill="#9cd" />
+                    <rect x="1" y="11" width="10" height="8" fill="#555" />
+                    <rect x="2" y="12" width="2" height="2" fill="#fff" />
+                    <rect x="5" y="12" width="2" height="2" fill="#fff" />
+                    <rect x="8" y="12" width="2" height="2" fill="#fff" />
+                 </svg>
+                 <div className="absolute -bottom-1 -right-2 bg-yellow-400 text-red-600 text-[10px] font-bold px-1 border border-red-600 rotate-[-10deg]">
+                    ¥998
+                 </div>
+              </div>
+              <div className="text-[10px] text-blue-800 text-center leading-3">
+                 <span className="font-bold">NOKIA 8210</span><br/>
+                 <span className="text-gray-500 line-through">原价:1888</span>
+              </div>
+           </div>
+        );
+     }
+     if (variant === 2) {
+        return (
+           <div className={`w-full bg-pink-100 ${borderStyle} p-1 mb-2 text-center cursor-pointer`}>
+              <div className="text-[#ff00ff] font-bold text-sm blink drop-shadow-sm">交友俱乐部</div>
+              <div className="text-xs text-gray-800 mt-1 leading-4">
+                 寻找你的<br/><span className="text-blue-600 font-bold">轻舞飞扬</span>
+              </div>
+              <div className="mt-2 text-[9px] grid grid-cols-2 gap-1 px-2">
+                 <div className="bg-white border border-pink-400">美眉</div>
+                 <div className="bg-white border border-blue-400">帅哥</div>
+              </div>
+           </div>
+        );
+     }
+  }
+
+  // 88x31 Button
+  return (
+      <div className={`w-[88px] h-[31px] ${borderStyle} flex flex-col items-center justify-center text-[9px] cursor-pointer leading-none ${variant === 1 ? 'bg-[#ff9900]' : 'bg-[#003399]'}`}>
+          {variant === 1 ? (
+             <>
+               <span className="text-white font-bold tracking-widest text-xs">XML</span>
+               <span className="text-yellow-100 scale-75">VALID</span>
+             </>
+          ) : (
+             <>
+               <span className="text-white">Get</span>
+               <span className="text-yellow-300 font-bold text-xs italic">IE 5.0</span>
+             </>
+          )}
+      </div>
+  );
+};
