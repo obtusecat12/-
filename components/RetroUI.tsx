@@ -201,18 +201,40 @@ export const RetroAd: React.FC<AdProps> = ({ type, variant }) => {
         </div>
       );
     }
+    // Computer Training Ad - Updated with user image
     return (
-       <div className={`w-full h-[60px] bg-[#000080] ${borderStyle} flex items-center justify-between px-4 cursor-pointer overflow-hidden relative`}>
-          {/* Scrolling text background */}
-          <div className="absolute top-1 left-0 text-[#ffffff10] text-[40px] font-bold leading-none select-none whitespace-nowrap">
-             SCHOOL SCHOOL SCHOOL
+       <div className={`w-full h-[160px] bg-[#001030] ${borderStyle} flex items-center justify-between px-4 cursor-pointer overflow-hidden relative group`}>
+          {/* Background Image - Scaled using object-cover to handle 1278x527 source */}
+          <img 
+             src="https://i.ibb.co/zHrDS3LB/3.png" 
+             alt="Computer Training Background" 
+             className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+          
+          {/* Tech Overlay Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#000080]/80 via-[#000080]/40 to-transparent z-0"></div>
+
+          {/* Left Content */}
+          <div className="z-10 flex flex-col justify-center h-full drop-shadow-md">
+             <div className="flex items-baseline gap-2">
+                <span className="text-[#ffff00] font-black text-2xl italic tracking-tighter" style={{ textShadow: "2px 2px 0 #000" }}>
+                   仙桃电脑培训
+                </span>
+             </div>
+             <div className="text-white text-sm font-bold mt-2 flex gap-2 items-center">
+                <div className="bg-blue-900/80 px-2 py-1 border border-white/30 text-cyan-200 shadow-md">五笔</div>
+                <div className="w-[2px] h-4 bg-gray-400"></div>
+                <div className="bg-blue-900/80 px-2 py-1 border border-white/30 text-cyan-200 shadow-md">办公</div>
+                <div className="w-[2px] h-4 bg-gray-400"></div>
+                <div className="bg-blue-900/80 px-2 py-1 border border-white/30 text-cyan-200 shadow-md">网页三剑客</div>
+             </div>
           </div>
-          <div className="z-10 text-white font-bold text-lg drop-shadow-md">
-             <span className="text-[#ffff00]">仙桃电脑培训</span>
-             <span className="text-sm block font-normal text-cyan-300">五笔 / 办公 / 网页三剑客</span>
-          </div>
-          <div className="z-10 bg-red-600 text-white border border-white px-2 py-1 text-xs blink shadow-lg">
-             包教包会
+          
+          {/* Right Button */}
+          <div className="z-10 flex items-center gap-2 mt-8 md:mt-0">
+             <button className="bg-red-600 text-white border-2 border-white shadow-[2px_2px_0_#000] px-4 py-2 text-sm font-bold blink hover:bg-red-500 active:translate-y-[1px]">
+                包教包会
+             </button>
           </div>
        </div>
     );
