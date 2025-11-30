@@ -269,9 +269,10 @@ export const Separator = () => (
 interface AdProps {
   type: 'banner' | 'sidebar' | 'button' | 'grid' | 'ranking';
   variant: 1 | 2 | 3;
+  onClick?: () => void;
 }
 
-export const RetroAd: React.FC<AdProps> = ({ type, variant }) => {
+export const RetroAd: React.FC<AdProps> = ({ type, variant, onClick }) => {
   const borderStyle = "border-t-2 border-l-2 border-white border-b-2 border-r-2 border-black";
   
   if (type === 'banner') {
@@ -305,7 +306,10 @@ export const RetroAd: React.FC<AdProps> = ({ type, variant }) => {
           </div>
           
           <div className="z-10 ml-2">
-             <button className="bg-gradient-to-b from-[#fcd275] to-[#b78824] border-t-2 border-l-2 border-[#ffeebb] border-b-2 border-r-2 border-[#684606] text-[#421C02] text-xs font-black px-3 py-1 shadow-lg hover:brightness-110 active:border-t-[#684606] active:border-l-[#684606] active:border-b-[#ffeebb] active:border-r-[#ffeebb] active:translate-y-[1px]">
+             <button 
+                onClick={onClick}
+                className="bg-gradient-to-b from-[#fcd275] to-[#b78824] border-t-2 border-l-2 border-[#ffeebb] border-b-2 border-r-2 border-[#684606] text-[#421C02] text-xs font-black px-3 py-1 shadow-lg hover:brightness-110 active:border-t-[#684606] active:border-l-[#684606] active:border-b-[#ffeebb] active:border-r-[#ffeebb] active:translate-y-[1px]"
+             >
                 进入游戏 &gt;&gt;
              </button>
           </div>
@@ -352,38 +356,44 @@ export const RetroAd: React.FC<AdProps> = ({ type, variant }) => {
   }
 
   if (type === 'grid') {
-      // 2x3 Grid Ad - Industrial / Medical style
+      const ads = [
+        { title: "老中医", sub: "根治疑难", img: "https://i.ibb.co/tMwtHg6H/laozy.png", color: "text-blue-900", badge: "祖传" },
+        { title: "挖掘机", sub: "蓝翔技校", img: "https://i.ibb.co/JWdjtNP0/wajj.png", color: "text-red-600", badge: "强" },
+        { title: "增高药", sub: "无效退款", img: "https://i.ibb.co/Ndb9y4cm/zengy.png", color: "text-green-800", badge: "热销" },
+        { title: "办证刻章", sub: "货到付款", img: "https://i.ibb.co/gF7T0B6X/banzk.png", color: "text-purple-800", badge: "急" },
+        { title: "不孕不育", sub: "送子观音", img: "https://i.ibb.co/QFwG0Sv2/buyb.png", color: "text-pink-800", badge: "名医" },
+        { title: "金牌月嫂", sub: "专业护理", img: "https://i.ibb.co/qMTfxFVP/yues.png", color: "text-orange-800", badge: "推荐" }
+      ];
+
       return (
-          <div className="border border-gray-500 bg-[#fff5ee] mb-2 text-xs">
-             <div className="bg-[#cc0000] text-white text-center font-bold py-[2px] border-b border-gray-500 flex justify-between px-2">
-                <span>商家推荐</span>
-                <span className="font-normal text-[10px] text-yellow-200">广告招租</span>
+          <div className="border border-gray-500 bg-[#fff5ee] mb-2 text-xs font-simsun">
+             <div className="bg-[#cc0000] text-white text-center font-bold py-[2px] border-b border-gray-500 flex justify-between px-2 items-center">
+                <span className="tracking-widest">商家推荐</span>
+                <span className="font-normal text-[10px] text-yellow-200 animate-pulse">广告招租</span>
              </div>
              <div className="grid grid-cols-2 gap-[1px] bg-gray-400 border border-gray-400">
-                {[
-                  { title: "老中医", sub: "疑难杂症", color: "text-[#000080]", icon: "medical" },
-                  { title: "挖掘机", sub: "山东蓝翔", color: "text-[#ff0000]", icon: "digger" },
-                  { title: "增高药", sub: "无效退款", color: "text-green-800", icon: "pill" },
-                  { title: "办证刻章", sub: "138xxx", color: "text-purple-800", icon: "stamp" },
-                  { title: "不孕不育", sub: "送子观音", color: "text-red-600", icon: "baby" },
-                  { title: "美容美发", sub: "洗剪吹5元", color: "text-pink-600", icon: "hair" }
-                ].map((item, i) => (
-                  <div key={i} className="bg-white p-1 flex gap-1 cursor-pointer hover:bg-[#ffffe0]">
-                      <div className="w-[32px] h-[32px] border border-gray-300 shrink-0 bg-gray-100 flex items-center justify-center overflow-hidden">
-                         {/* Simple Pixel Art Placeholders */}
-                         {item.icon === 'medical' && <svg width="20" height="20" viewBox="0 0 10 10"><path d="M4 1 h2 v3 h3 v2 h-3 v3 h-2 v-3 h-3 v-2 h3 z" fill="red"/></svg>}
-                         {item.icon === 'digger' && <svg width="24" height="20" viewBox="0 0 12 10"><path d="M0 8 h12 v2 h-12 z M2 5 h6 v3 h-6 z M6 2 l4 3" fill="orange" stroke="black" strokeWidth="1"/></svg>}
-                         {item.icon === 'pill' && <svg width="20" height="20" viewBox="0 0 10 10"><rect x="3" y="1" width="4" height="8" rx="2" fill="blue"/><rect x="3" y="1" width="4" height="4" rx="2" fill="white"/></svg>}
-                         {item.icon === 'stamp' && <svg width="20" height="20" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="red"/><text x="2" y="7" fontSize="5" fill="red">章</text></svg>}
-                         {item.icon === 'baby' && <svg width="20" height="20" viewBox="0 0 10 10"><circle cx="5" cy="3" r="2" fill="pink"/><path d="M2 9 q3 -5 6 0" stroke="pink" fill="none"/></svg>}
-                         {item.icon === 'hair' && <svg width="20" height="20" viewBox="0 0 10 10"><path d="M2 2 q3 -2 6 0 v5 h-6 z" fill="black"/></svg>}
+                {ads.map((item, i) => (
+                  <div key={i} className={`bg-white p-1 flex flex-col items-center gap-1 cursor-pointer hover:bg-[#ffffe0] hover:ring-2 hover:ring-red-500 hover:z-10 transition-all duration-75 relative group`}>
+                      {/* 64x64 Box */}
+                      <div className="w-[64px] h-[64px] border border-gray-300 bg-gray-100 flex items-center justify-center overflow-hidden shrink-0 relative">
+                          <img src={item.img} alt={item.title} className="w-full h-full object-cover" />
+                          {/* Fake 'Hot' or overlay */}
+                          {item.badge && <div className="absolute top-0 right-0 bg-red-600 text-white text-[8px] px-1 leading-3 border-l border-b border-white shadow-sm z-10">{item.badge}</div>}
                       </div>
-                      <div className="flex flex-col justify-center leading-3 overflow-hidden">
-                         <span className={`font-bold ${item.color} truncate`}>{item.title}</span>
-                         <span className="text-gray-500 scale-90 origin-left truncate">{item.sub}</span>
+                      
+                      <div className="flex flex-col items-center leading-3 w-full">
+                         <span className={`font-bold ${item.color} text-center w-full truncate border-b border-dashed border-gray-300 pb-[1px] mb-[1px]`}>{item.title}</span>
+                         <span className="text-gray-500 text-[9px] scale-90 origin-center truncate">{item.sub}</span>
+                         {/* Fake button/phone */}
+                         <div className="mt-1 bg-blue-50 text-blue-800 border border-blue-200 px-1 text-[9px] rounded-sm hover:bg-blue-600 hover:text-white w-full text-center">
+                            点击咨询
+                         </div>
                       </div>
                   </div>
                 ))}
+             </div>
+             <div className="bg-[#fff5ee] border-t border-gray-300 text-center text-[9px] text-gray-400 py-[1px]">
+                虚假信息举报热线: 110
              </div>
           </div>
       )

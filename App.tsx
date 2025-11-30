@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { SITE_NAME, BOARDS, MOCK_THREADS } from './constants';
 import { Board } from './types';
 import { BevelBox, RetroButton, Marquee, PixelIcon, Separator, RetroAd } from './components/RetroUI';
+import { LegendOfMirLogin } from './components/LegendOfMirLogin';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date().toLocaleString());
@@ -92,7 +93,7 @@ const Sidebar = () => (
     </div>
 );
 
-const TopBanner = () => (
+const TopBanner = ({ onEnterGame }: { onEnterGame: () => void }) => (
     <div className="mb-2 relative">
       <div className="flex justify-between items-end mb-1 px-1">
         {/* Retro Logo Text Art */}
@@ -115,7 +116,7 @@ const TopBanner = () => (
       
       {/* Banner Ad */}
       <div className="mb-2">
-         <RetroAd type="banner" variant={1} />
+         <RetroAd type="banner" variant={1} onClick={onEnterGame} />
       </div>
 
       <Marquee text="[公告] 系统将于本周五凌晨进行升级维护，请各位网友注意保存文章。文明上网，自律守法。祝大家千禧年快乐！本站招募各版块版主，有意者请联系管理员。" />
@@ -285,7 +286,7 @@ const Footer = ({ visitCount }: { visitCount: number }) => (
 );
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'board' | 'thread'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'board' | 'thread' | 'game'>('home');
   const [activeBoard, setActiveBoard] = useState<Board | null>(null);
   const [visitCount] = useState(128848);
 
@@ -300,10 +301,22 @@ export default function App() {
     setActiveBoard(null);
   };
 
+  const enterGame = () => {
+    setCurrentView('game');
+  };
+
+  const exitGame = () => {
+    setCurrentView('home');
+  };
+
+  if (currentView === 'game') {
+    return <LegendOfMirLogin onExit={exitGame} />;
+  }
+
   return (
     <div className="max-w-[960px] mx-auto p-[4px] bg-[#cccccc] min-h-screen shadow-2xl border-l border-r border-white relative">
       <div className="bg-[#eeeeee] p-2 min-h-screen border border-gray-500 relative z-10">
-        <TopBanner />
+        <TopBanner onEnterGame={enterGame} />
         <Navigation />
 
         {/* Location Breadcrumb */}

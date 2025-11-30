@@ -34,6 +34,22 @@
         box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
       }
 
+      /* Retro Millennium Cursors */
+      :root {
+        /* Windows XP / 2000 Style Arrow - Fixed Syntax */
+        --cursor-default: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZmlsdGVyIGlkPSJkIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTUwJSIgaGVpZ2h0PSIxNTAlIj48ZmVPZmZzZXQgcmVzdWx0PSJvIiBpbj0iU291cmNlQWxwaGEiIGR4PSIxIiBkeT0iMSIvPjxmZUNvbG9yTWF0cml4IHJlc3VsdD0ibSIgaW49Im8iIHR5cGU9Im1hdHJpeCIgdmFsdWVzPSIwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwIDAgMCAwLjQgMCIvPjxmZUJsZW5kIGluPSRTb3VyY2VHcmFwaGljIiBpbjI9Im0iIG1vZGU9Im5vcm1hbCIvPjwvZmlsdGVyPjxwYXRoIGQ9Ik0xLDEgTDEsMTUuNSBMNC41LDEyIEw3LjUsMTggTDEwLDE3IEw3LDExIEwxMi41LDExIEwxLDEgWiIgZmlsbD0id2hpdGUiIHN0cm9rZT0iYmxhY2siIHN0cm9rZS13aWR0aD0iMSIgc3R5bGU9InNoYXBlLXJlbmRlcmluZzpjcmlzcEVkZ2VzO2ZpbHRlcjp1cmwoI2QpOyIvPjwvc3ZnPg==') 0 0, auto;
+        
+        /* Use URL Encoded SVG for safer parsing if Base64 fails */
+        --cursor-default-safe: url("data:image/svg+xml;charset=utf-8,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='shadow' x='0' y='0' width='150%25' height='150%25'%3E%3CfeOffset in='SourceAlpha' dx='1' dy='1' result='o'/%3E%3CfeColorMatrix in='o' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/%3E%3CfeBlend in='SourceGraphic' mode='normal'/%3E%3C/filter%3E%3Cpath d='M1,1 L1,15.5 L4.5,12 L7.5,18 L10,17 L7,11 L12.5,11 L1,1 Z' fill='white' stroke='black' stroke-width='1' style='filter:url(%23shadow);shape-rendering:crispEdges'/%3E%3C/svg%3E") 0 0, default;
+
+        /* Windows XP / 2000 Style Hand Pointer - Fixed Syntax */
+        --cursor-pointer-safe: url("data:image/svg+xml;charset=utf-8,%3Csvg width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='shadow' x='0' y='0' width='150%25' height='150%25'%3E%3CfeOffset in='SourceAlpha' dx='1' dy='1' result='o'/%3E%3CfeColorMatrix in='o' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/%3E%3CfeBlend in='SourceGraphic' mode='normal'/%3E%3C/filter%3E%3Cpath d='M9.5,2.5 L9.5,10.5 L7.5,10.5 L5.5,12.5 L5.5,17.5 L13.5,17.5 L13.5,10.5 L14.5,10.5 L14.5,5.5 L13.5,5.5 L13.5,10.5 L12.5,10.5 L12.5,4.5 L11.5,4.5 L11.5,10.5 L10.5,10.5 L10.5,3.5 L9.5,3.5 Z' fill='white' stroke='black' stroke-width='1' style='filter:url(%23shadow);shape-rendering:crispEdges'/%3E%3C/svg%3E") 9 2, pointer;
+      }
+
+      html, body {
+        cursor: var(--cursor-default-safe);
+      }
+
       body {
         background-color: #87CEEB; /* Sky Blue base */
         /* User provided background image - Direct Link */
@@ -44,7 +60,6 @@
         image-rendering: pixelated;
         margin: 0;
         padding: 0;
-        cursor: crosshair; /* Weirdcore: Crosshair cursor */
         min-height: 100vh;
       }
       
@@ -62,10 +77,22 @@
       }
 
       /* Links - The classic blue/purple/red trio */
-      a { color: #000080; text-decoration: none; }
-      a:visited { color: #000080; }
-      a:hover { color: #FF0000; text-decoration: underline; cursor: help; }
-      a:active { color: #FF0000; }
+      a { color: #000080; text-decoration: none; cursor: var(--cursor-pointer-safe); }
+      a:visited { color: #000080; cursor: var(--cursor-pointer-safe); }
+      a:hover { 
+        color: #FF0000; 
+        text-decoration: underline; 
+        cursor: var(--cursor-pointer-safe);
+      }
+      a:active { color: #FF0000; cursor: var(--cursor-pointer-safe); }
+      
+      button, .cursor-pointer {
+        cursor: var(--cursor-pointer-safe) !important;
+      }
+      
+      button:hover {
+        cursor: var(--cursor-pointer-safe) !important;
+      }
       
       /* Utilities for retro aesthetics */
       .font-simsun { font-family: "SimSun", "宋体", serif; }
