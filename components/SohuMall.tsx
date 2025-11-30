@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
 import { RetroButton, PixelIcon } from './RetroUI';
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      marquee: any;
-    }
-  }
-}
+// Workaround for missing marquee type definition in JSX.IntrinsicElements
+const MarqueeElement = 'marquee' as any;
 
 const Separator = () => <div className="border-b border-dotted border-[#ccc] my-1 w-full"></div>;
 
@@ -52,21 +47,110 @@ const Comment = ({ user, date, content, score }: { user: string, date: string, c
     </div>
 )
 
+// Retro Popup Component
+interface ModalState {
+  isOpen: boolean;
+  title: string;
+  content: React.ReactNode;
+  icon?: 'error' | 'info' | 'none';
+}
+
+const RetroModal: React.FC<ModalState & { onClose: () => void }> = ({ isOpen, title, content, icon = 'none', onClose }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-[1px]" onClick={(e) => { if(e.target === e.currentTarget) onClose(); }}>
+      <div className="bg-[#d4d0c8] border-t-2 border-l-2 border-white border-b-2 border-r-2 border-black shadow-2xl min-w-[300px] max-w-[90vw]">
+        {/* Title Bar */}
+        <div className="bg-[#000080] text-white px-2 py-1 font-bold text-xs flex justify-between items-center select-none">
+            <span>{title}</span>
+            <button 
+              onClick={onClose} 
+              className="bg-[#d4d0c8] text-black w-4 h-4 flex items-center justify-center border border-white border-b-black border-r-black text-[10px] leading-3 active:border-t-black active:border-l-black focus:outline-none"
+            >
+              ×
+            </button>
+        </div>
+        {/* Content */}
+        <div className="p-4 flex gap-3">
+            {icon === 'error' && (
+              <div className="w-8 h-8 shrink-0 bg-white border border-gray-500 rounded-full flex items-center justify-center text-red-600 font-bold text-xl select-none">!</div>
+            )}
+            {icon === 'info' && (
+              <div className="w-8 h-8 shrink-0 bg-white border border-gray-500 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl select-none italic">i</div>
+            )}
+            <div className="text-black text-sm leading-5 break-words flex-1 flex items-center">
+               {content}
+            </div>
+        </div>
+        {/* Footer Buttons */}
+        <div className="flex justify-center pb-3 px-4">
+            <button 
+              onClick={onClose} 
+              className="px-6 py-1 text-xs border-t-2 border-l-2 border-white border-b-2 border-r-2 border-black active:border-t-black active:border-l-black bg-[#d4d0c8] min-w-[80px] focus:outline-dotted"
+            >
+              确定
+            </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
   const [activeTab, setActiveTab] = useState<'desc' | 'specs' | 'comments'>('desc');
   const [pollVoted, setPollVoted] = useState(false);
+  const [modal, setModal] = useState<ModalState>({ isOpen: false, title: '', content: null });
+
+  const showBusy = () => {
+    setModal({
+      isOpen: true,
+      title: '提示信息',
+      content: '服务器繁忙 (Error 503)\n当前访问人数过多，请稍后再试。',
+      icon: 'error'
+    });
+  };
+
+  const showBuyError = () => {
+     setModal({
+      isOpen: true,
+      title: '交易失败',
+      content: (
+        <div>
+          <p className="font-bold mb-2">订单提交失败！</p>
+          <p>支付网关无响应或余额不足。</p>
+          <p className="text-[#666] mt-2">错误代码: 0x80004005</p>
+        </div>
+      ),
+      icon: 'error'
+    });
+  };
+
+  const showZoom = () => {
+    setModal({
+      isOpen: true,
+      title: '图片预览 - 诺基亚 8210',
+      content: (
+        <div className="flex justify-center items-center bg-white border border-gray-500 p-2">
+            <img src="https://i.ibb.co/nNfWqFnf/image.png" alt="Zoom" className="max-w-full max-h-[400px]" />
+        </div>
+      ),
+      icon: 'none'
+    });
+  };
 
   return (
     <div className="min-h-screen bg-white font-simsun text-xs text-[#000] leading-[1.4] cursor-default">
+      <RetroModal {...modal} onClose={() => setModal({ ...modal, isOpen: false })} />
+
       {/* 1. Top Portal Bar */}
       <div className="bg-[#dcdcdc] border-b border-[#999] py-[2px] px-2 text-[#333]">
         <div className="max-w-[800px] mx-auto flex justify-between">
            <div className="flex gap-2">
               <span className="cursor-pointer hover:text-red-600 hover:underline" onClick={onExit}>&lt;&lt; 返回搜狐首页</span>
               <span>|</span>
-              <span className="cursor-pointer hover:text-red-600 hover:underline">注册新用户</span>
+              <span className="cursor-pointer hover:text-red-600 hover:underline" onClick={showBusy}>注册新用户</span>
               <span>|</span>
-              <span className="cursor-pointer hover:text-red-600 hover:underline">会员登录</span>
+              <span className="cursor-pointer hover:text-red-600 hover:underline" onClick={showBusy}>会员登录</span>
            </div>
            <div className="flex gap-2">
               <span className="cursor-pointer hover:text-red-600 hover:underline">帮助中心</span>
@@ -137,9 +221,9 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
       <div className="bg-[#ffffcc] border-b border-[#ebdcb2] py-1 text-[#333] overflow-hidden whitespace-nowrap text-xs">
           <div className="max-w-[800px] mx-auto flex items-center px-2">
              <span className="font-bold text-red-600 mr-2">[公告]</span>
-             <marquee scrollamount="3" className="w-full">
+             <MarqueeElement scrollamount="3" className="w-full">
                 庆祝搜狐商城全新改版！全场免邮费！诺基亚8210现货热销中... 严正打击假冒伪劣商品，承诺假一赔十！本站支持招商银行一网通支付。
-             </marquee>
+             </MarqueeElement>
           </div>
       </div>
 
@@ -161,10 +245,10 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
                      <input type="password" className="w-[100px] border border-[#ccc] h-[16px]" />
                   </div>
                   <div className="flex justify-center gap-2 mt-1">
-                     <button className="bg-[#ddd] border border-[#999] px-2 shadow-sm active:translate-y-[1px]">登录</button>
-                     <button className="bg-[#ddd] border border-[#999] px-2 shadow-sm active:translate-y-[1px]">注册</button>
+                     <button className="bg-[#ddd] border border-[#999] px-2 shadow-sm active:translate-y-[1px]" onClick={showBusy}>登录</button>
+                     <button className="bg-[#ddd] border border-[#999] px-2 shadow-sm active:translate-y-[1px]" onClick={showBusy}>注册</button>
                   </div>
-                  <div className="text-center mt-1 text-blue-800 underline cursor-pointer">忘记密码?</div>
+                  <div className="text-center mt-1 text-blue-800 underline cursor-pointer" onClick={showBusy}>忘记密码?</div>
                </div>
             </SideBox>
 
@@ -237,12 +321,12 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
                    {/* Product Image */}
                    <div className="w-[200px] shrink-0 flex flex-col items-center">
                        <div className="w-[180px] h-[180px] border border-[#eee] flex items-center justify-center p-2 mb-2 bg-white relative">
-                          <img src="https://i.ibb.co/nNfWqFnf/image.png" alt="Nokia 8210" className="max-w-full max-h-full object-contain" />
+                          <img src="https://i.ibb.co/nNfWqFnf/image.png" alt="Nokia 8210" className="max-w-full max-h-full object-contain cursor-zoom-in" onClick={showZoom} />
                           <div className="absolute top-1 right-1"><GifHot /></div>
                        </div>
                        <div className="flex gap-2 text-[10px] text-blue-800 underline cursor-pointer">
-                          <span>[放大图片]</span>
-                          <span>[推荐给朋友]</span>
+                          <span onClick={showZoom}>[放大图片]</span>
+                          <span onClick={() => alert('已添加到浏览器收藏夹！')}>[推荐给朋友]</span>
                        </div>
                    </div>
 
@@ -279,13 +363,14 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
 
                        <div className="flex gap-2 mt-2">
                            <button 
-                                onClick={() => alert('已将 [诺基亚 8210] 加入购物车！\n目前购物车共有 1 件商品。\n\n请点击页面右上角“去结算”进行支付。')}
+                                onClick={showBuyError}
                                 className="bg-[#ff3300] bg-gradient-to-b from-[#ff6600] to-[#cc0000] text-white font-bold px-4 py-1 border-2 border-[#fff] shadow-[2px_2px_0_#999] active:border-[#999] active:shadow-none active:translate-y-[2px]"
                             >
                                 <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAxaDRsMi42OCAxMy4zOWEyIDIgMCAwIDAgMiAxLjYxaDkuNzJhMiAyIDAgMCAwIDItMS42MUwyMyA2SDZNMTAgMjFhMiAyIDAgMSAwIDQtNCAyIDIgMCAwIDAtNCA0bTkgMGEyIDIgMCAxIDAgNC00IDIgMiAwIDAgMC00IDQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==" className="inline-block align-bottom mr-1" />
                                 立即购买
                            </button>
                            <button 
+                                onClick={() => alert('收藏成功！\n请按 Ctrl+D 添加到书签。')}
                                 className="bg-[#eee] text-black border-2 border-[#fff] shadow-[2px_2px_0_#999] px-2 py-1 active:translate-y-[1px]"
                            >
                                 加入收藏夹
@@ -336,7 +421,7 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
                                 此外，它还内置了四款精彩的游戏，让您在闲暇时光尽享乐趣。
                             </p>
                             <div className="text-center my-4">
-                                <img src="https://i.ibb.co/nNfWqFnf/image.png" className="inline-block border border-black" width="120" />
+                                <img src="https://i.ibb.co/nNfWqFnf/image.png" className="inline-block border border-black cursor-zoom-in" width="120" onClick={showZoom} />
                                 <div className="text-[10px] text-gray-500 mt-1">实物拍摄</div>
                             </div>
                             <div className="bg-[#ffffcc] border border-[#e6db55] p-2 mt-4 text-[#333]">
@@ -405,8 +490,8 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
                 <div className="bg-[#e0e0e0] px-2 py-1 font-bold text-[#333]">看过该商品的人还买了</div>
                 <div className="grid grid-cols-4 gap-2 p-2 bg-white">
                     {[
-                        {n: '爱立信T28', p: '￥2680', i: 'https://i.ibb.co/3sXzH3W/t28.png'},
-                        {n: '摩托罗拉V998', p: '￥3200', i: 'https://i.ibb.co/Rym7r5W/v998.png'},
+                        {n: '爱立信T28', p: '￥2680', i: 'https://i.ibb.co/TBxVKjyh/Gemini-Generated-Image-aed4t4aed4t4aed4.png'},
+                        {n: '摩托罗拉V998', p: '￥3200', i: 'https://i.ibb.co/cSLV81pf/Gemini-Generated-Image-2nr1g62nr1g62nr1.png'},
                         {n: '手机挂绳', p: '￥15', i: 'https://i.ibb.co/ZcW1M2h/bp.png'}, // Placeholder img
                         {n: '充电器', p: '￥80', i: 'https://i.ibb.co/c1m5g1w/cd.png'}, // Placeholder img
                     ].map((item, idx) => (
