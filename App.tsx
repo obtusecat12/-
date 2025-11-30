@@ -3,6 +3,7 @@ import { SITE_NAME, BOARDS, MOCK_THREADS } from './constants';
 import { Board } from './types';
 import { BevelBox, RetroButton, Marquee, PixelIcon, Separator, RetroAd } from './components/RetroUI';
 import { LegendOfMirLogin } from './components/LegendOfMirLogin';
+import { SohuMall } from './components/SohuMall';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date().toLocaleString());
@@ -24,7 +25,7 @@ const Clock = () => {
   );
 };
 
-const Sidebar = () => (
+const Sidebar = ({ onEnterShop }: { onEnterShop: () => void }) => (
     <div className="w-full md:w-[180px] flex flex-col gap-2 shrink-0">
       
       {/* Login */}
@@ -73,7 +74,8 @@ const Sidebar = () => (
 
       {/* Sidebar Ads */}
       <div className="flex flex-col gap-1">
-         <RetroAd type="sidebar" variant={1} />
+         {/* Nokia Ad - Click to Enter Shop */}
+         <RetroAd type="sidebar" variant={1} onClick={onEnterShop} />
          <RetroAd type="sidebar" variant={2} />
       </div>
 
@@ -286,7 +288,7 @@ const Footer = ({ visitCount }: { visitCount: number }) => (
 );
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'board' | 'thread' | 'game'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'board' | 'thread' | 'game' | 'shop'>('home');
   const [activeBoard, setActiveBoard] = useState<Board | null>(null);
   const [visitCount] = useState(128848);
 
@@ -305,12 +307,20 @@ export default function App() {
     setCurrentView('game');
   };
 
-  const exitGame = () => {
+  const enterShop = () => {
+    setCurrentView('shop');
+  };
+
+  const exitGameOrShop = () => {
     setCurrentView('home');
   };
 
   if (currentView === 'game') {
-    return <LegendOfMirLogin onExit={exitGame} />;
+    return <LegendOfMirLogin onExit={exitGameOrShop} />;
+  }
+
+  if (currentView === 'shop') {
+    return <SohuMall onExit={exitGameOrShop} />;
   }
 
   return (
@@ -364,11 +374,11 @@ export default function App() {
 
           {/* Right Sidebar */}
           <div className="hidden md:block">
-             <Sidebar />
+             <Sidebar onEnterShop={enterShop} />
           </div>
           {/* Mobile Sidebar adjustment */}
           <div className="md:hidden">
-             <Sidebar />
+             <Sidebar onEnterShop={enterShop} />
           </div>
         </div>
 

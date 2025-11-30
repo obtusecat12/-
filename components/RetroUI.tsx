@@ -437,7 +437,10 @@ export const RetroAd: React.FC<AdProps> = ({ type, variant, onClick }) => {
      // Vertical sidebar ads
      if (variant === 1) {
         return (
-           <div className={`w-full ${borderStyle} mb-2 cursor-pointer relative group aspect-[1086/998]`}>
+           <div 
+             className={`w-full ${borderStyle} mb-2 cursor-pointer relative group aspect-[1086/998]`}
+             onClick={onClick}
+           >
               {/* Full Background Image */}
               <img 
                 src="https://i.ibb.co/nNfWqFnf/image.png" 
@@ -448,20 +451,20 @@ export const RetroAd: React.FC<AdProps> = ({ type, variant, onClick }) => {
               {/* Rogue Ads: Diverse Close Buttons */}
               
               {/* Top-Right: Classic Win95 gray box */}
-              <div className="absolute top-[2px] right-[2px] w-4 h-4 bg-[#c0c0c0] border-t border-l border-white border-b border-r border-black flex items-center justify-center text-black font-bold text-[10px] leading-none z-20 select-none active:border-t-black active:border-l-black active:border-b-white active:border-r-white shadow-sm">×</div>
+              <div className="absolute top-[2px] right-[2px] w-4 h-4 bg-[#c0c0c0] border-t border-l border-white border-b border-r border-black flex items-center justify-center text-black font-bold text-[10px] leading-none z-20 select-none active:border-t-black active:border-l-black active:border-b-white active:border-r-white shadow-sm" onClick={(e) => { e.stopPropagation(); }}>×</div>
               
               {/* Top-Left: Text based "关闭" */}
-              <div className="absolute top-0 left-0 bg-white/90 border border-gray-500 px-1 h-4 flex items-center text-[10px] text-black z-20 hover:text-red-600 font-simsun cursor-pointer">
+              <div className="absolute top-0 left-0 bg-white/90 border border-gray-500 px-1 h-4 flex items-center text-[10px] text-black z-20 hover:text-red-600 font-simsun cursor-pointer" onClick={(e) => { e.stopPropagation(); }}>
                  关闭
               </div>
 
               {/* Bottom-Right: Fake Red Warning Close */}
-              <div className="absolute bottom-0 right-0 w-5 h-5 bg-red-600 border border-white text-white font-bold flex items-center justify-center text-xs z-20 hover:bg-red-700">
+              <div className="absolute bottom-0 right-0 w-5 h-5 bg-red-600 border border-white text-white font-bold flex items-center justify-center text-xs z-20 hover:bg-red-700" onClick={(e) => { e.stopPropagation(); }}>
                  X
               </div>
 
               {/* Bottom-Left: Round Circle Black */}
-              <div className="absolute bottom-0 left-0 w-4 h-4 rounded-full bg-black/80 border border-white flex items-center justify-center text-white text-[9px] z-20 hover:bg-black">
+              <div className="absolute bottom-0 left-0 w-4 h-4 rounded-full bg-black/80 border border-white flex items-center justify-center text-white text-[9px] z-20 hover:bg-black" onClick={(e) => { e.stopPropagation(); }}>
                  x
               </div>
 
