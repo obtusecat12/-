@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { SITE_NAME, BOARDS, MOCK_THREADS } from './constants';
+import { SITE_NAME, BOARDS, MOCK_THREADS, SITE_URL } from './constants';
 import { Board } from './types';
 import { BevelBox, RetroButton, Marquee, PixelIcon, Separator, RetroAd } from './components/RetroUI';
 import { LegendOfMirLogin } from './components/LegendOfMirLogin';
 import { SohuMall } from './components/SohuMall';
+import { IEFrame } from './components/IEFrame';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date().toLocaleString());
@@ -292,10 +293,20 @@ export default function App() {
   const [activeBoard, setActiveBoard] = useState<Board | null>(null);
   const [visitCount] = useState(128848);
 
+  // Derive URL from current state
+  const getVirtualUrl = () => {
+    switch(currentView) {
+      case 'home': return `http://${SITE_URL}/`;
+      case 'shop': return 'http://store.sohu.com/';
+      case 'game': return 'http://www.mir2.com.cn/index.htm';
+      case 'board': return `http://${SITE_URL}/board.asp?id=${activeBoard?.id || 'unknown'}`;
+      default: return `http://${SITE_URL}/`;
+    }
+  };
+
   const handleBoardClick = (board: Board) => {
     setActiveBoard(board);
     setCurrentView('board');
-    window.scrollTo(0, 0);
   };
 
   const goHome = () => {
@@ -315,75 +326,92 @@ export default function App() {
     setCurrentView('home');
   };
 
-  if (currentView === 'game') {
-    return <LegendOfMirLogin onExit={exitGameOrShop} />;
-  }
+  const renderContent = () => {
+    if (currentView === 'game') {
+      return <LegendOfMirLogin onExit={exitGameOrShop} />;
+    }
 
-  if (currentView === 'shop') {
-    return <SohuMall onExit={exitGameOrShop} />;
-  }
+    if (currentView === 'shop') {
+      return <SohuMall onExit={exitGameOrShop} />;
+    }
+
+    // Wrap the BBS content in a div that simulates the "Body" of the webpage 
+    // to apply the background image and color correctly within the IEFrame.
+    return (
+      <div className="min-h-full w-full" style={{
+          backgroundColor: '#87CEEB',
+          backgroundImage: "url('https://i.imgur.com/Qeun7PX.png')",
+          backgroundRepeat: 'repeat',
+          imageRendering: 'pixelated'
+      }}>
+        <div className="max-w-[960px] mx-auto p-[4px] bg-[#cccccc] min-h-full shadow-2xl border-l border-r border-white relative">
+          <div className="bg-[#eeeeee] p-2 min-h-full border border-gray-500 relative z-10">
+            <TopBanner onEnterGame={enterGame} />
+            <Navigation />
+
+            {/* Location Breadcrumb */}
+            <div className="text-xs my-2 font-simsun flex items-center">
+              <PixelIcon type="folder" className="mr-1" />
+              当前位置：
+              <a href="#" onClick={goHome}>首页</a> 
+              {activeBoard && <span> &gt; {activeBoard.title}</span>}
+            </div>
+
+            <div className="flex flex-col md:flex-row gap-2">
+              {/* Main Content Area */}
+              <div className="flex-1 min-w-0">
+                
+                {currentView === 'home' && (
+                  <>
+                    <div className="border border-red-800 bg-[#fff5e6] p-2 text-xs text-red-900 mb-2 leading-5">
+                        <div className="flex items-center gap-1">
+                          <PixelIcon type="fire" /> 
+                          <b>[推荐]</b> 祝贺我市被评为全国文明城市！
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <PixelIcon type="fire" />
+                          <b>[热门]</b> 关于举办“新世纪杯”网友征文大赛的通知
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <PixelIcon type="speaker" />
+                          <b className="text-blue-800">[广告]</b> <span className="underline cursor-pointer hover:text-red-600">极速网吧新开业，会员充100送50！</span>
+                        </div>
+                    </div>
+                    
+                    {/* Mid-page Ad */}
+                    <div className="mb-2">
+                      <RetroAd type="banner" variant={2} />
+                    </div>
+
+                    <BoardList handleBoardClick={handleBoardClick} />
+                  </>
+                )}
+
+                <ThreadList filterBoardId={activeBoard?.id} activeBoard={activeBoard} />
+
+                {currentView === 'home' && <FriendLinks />}
+              </div>
+
+              {/* Right Sidebar */}
+              <div className="hidden md:block">
+                <Sidebar onEnterShop={enterShop} />
+              </div>
+              {/* Mobile Sidebar adjustment */}
+              <div className="md:hidden">
+                <Sidebar onEnterShop={enterShop} />
+              </div>
+            </div>
+
+            <Footer visitCount={visitCount} />
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="max-w-[960px] mx-auto p-[4px] bg-[#cccccc] min-h-screen shadow-2xl border-l border-r border-white relative">
-      <div className="bg-[#eeeeee] p-2 min-h-screen border border-gray-500 relative z-10">
-        <TopBanner onEnterGame={enterGame} />
-        <Navigation />
-
-        {/* Location Breadcrumb */}
-        <div className="text-xs my-2 font-simsun flex items-center">
-           <PixelIcon type="folder" className="mr-1" />
-           当前位置：
-           <a href="#" onClick={goHome}>首页</a> 
-           {activeBoard && <span> &gt; {activeBoard.title}</span>}
-        </div>
-
-        <div className="flex flex-col md:flex-row gap-2">
-          {/* Main Content Area */}
-          <div className="flex-1 min-w-0">
-             
-             {currentView === 'home' && (
-               <>
-                 <div className="border border-red-800 bg-[#fff5e6] p-2 text-xs text-red-900 mb-2 leading-5">
-                    <div className="flex items-center gap-1">
-                      <PixelIcon type="fire" /> 
-                      <b>[推荐]</b> 祝贺我市被评为全国文明城市！
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <PixelIcon type="fire" />
-                      <b>[热门]</b> 关于举办“新世纪杯”网友征文大赛的通知
-                    </div>
-                    <div className="flex items-center gap-1">
-                       <PixelIcon type="speaker" />
-                       <b className="text-blue-800">[广告]</b> <span className="underline cursor-pointer hover:text-red-600">极速网吧新开业，会员充100送50！</span>
-                    </div>
-                 </div>
-                 
-                 {/* Mid-page Ad */}
-                 <div className="mb-2">
-                   <RetroAd type="banner" variant={2} />
-                 </div>
-
-                 <BoardList handleBoardClick={handleBoardClick} />
-               </>
-             )}
-
-             <ThreadList filterBoardId={activeBoard?.id} activeBoard={activeBoard} />
-
-             {currentView === 'home' && <FriendLinks />}
-          </div>
-
-          {/* Right Sidebar */}
-          <div className="hidden md:block">
-             <Sidebar onEnterShop={enterShop} />
-          </div>
-          {/* Mobile Sidebar adjustment */}
-          <div className="md:hidden">
-             <Sidebar onEnterShop={enterShop} />
-          </div>
-        </div>
-
-        <Footer visitCount={visitCount} />
-      </div>
-    </div>
+    <IEFrame url={getVirtualUrl()} onGoHome={goHome}>
+      {renderContent()}
+    </IEFrame>
   );
 }

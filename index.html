@@ -6,34 +6,6 @@
     <title>沔阳论坛网 - Mianyang BBS 2000 - 网友之家</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* Retro Windows 9X / 2000 Scrollbar */
-      ::-webkit-scrollbar {
-        width: 16px;
-        height: 16px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #dfdfdf;
-        border-left: 1px solid white;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #c0c0c0;
-        border-top: 1px solid #ffffff;
-        border-left: 1px solid #ffffff;
-        border-right: 1px solid #404040;
-        border-bottom: 1px solid #404040;
-        box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
-      }
-      ::-webkit-scrollbar-button {
-        background: #c0c0c0;
-        border-top: 1px solid #ffffff;
-        border-left: 1px solid #ffffff;
-        border-right: 1px solid #404040;
-        border-bottom: 1px solid #404040;
-        width: 16px;
-        height: 16px;
-        box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #dfdfdf;
-      }
-
       /* Retro Millennium Cursors */
       :root {
         /* Windows XP / 2000 Style Arrow - Fixed Syntax */
@@ -48,11 +20,12 @@
 
       html, body {
         cursor: var(--cursor-default-safe);
+        height: 100%;
+        overflow: hidden; /* Important: Disable body scroll so IEFrame handles viewport */
       }
 
       body {
         background-color: #87CEEB; /* Sky Blue base */
-        /* User provided background image - Direct Link */
         background-image: url('https://i.ibb.co/jZsb5V6L/yupp-generated-image-293314.png');
         background-repeat: repeat;
         font-family: "SimSun", "宋体", "Courier New", monospace;
@@ -60,7 +33,6 @@
         image-rendering: pixelated;
         margin: 0;
         padding: 0;
-        min-height: 100vh;
       }
       
       /* Vignette Overlay for Liminal Atmosphere */

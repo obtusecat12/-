@@ -71,7 +71,7 @@ export const LegendOfMirLogin: React.FC<{ onExit: () => void }> = ({ onExit }) =
   const tabs = ['全部', '雷霆', '光芒', '烈焰', 'VIP区'];
 
   return (
-    <div className="fixed inset-0 bg-black z-50 flex items-center justify-center overflow-hidden font-simsun select-none text-[12px]">
+    <div className="relative w-full min-h-[768px] h-full bg-black flex items-center justify-center overflow-hidden font-simsun select-none text-[12px]">
       {/* Aspect Ratio Container - 1024x768 scale */}
       <div 
         className="relative w-full max-w-[1024px] aspect-[4/3] bg-[#000] shadow-2xl overflow-hidden border border-[#333] cursor-default"
@@ -342,7 +342,7 @@ export const LegendOfMirLogin: React.FC<{ onExit: () => void }> = ({ onExit }) =
                     <div className="flex justify-center pb-2 bg-[#d4d0c8]">
                         <button 
                             onClick={() => setShowError(false)}
-                            className="px-6 py-1 border-t-2 border-l-2 border-[#fff] border-b-2 border-r-2 border-[#000] active:border-t-[#000] active:border-l-[#000] active:border-b-[#fff] active:border-r-[#fff] bg-[#c0c0c0]"
+                            className="px-6 py-1 border-t-2 border-l-2 border-[#fff] border-b-2 border-r-2 border-black active:border-t-black active:border-l-black active:border-b-white active:border-r-white bg-[#c0c0c0]"
                         >
                             确定
                         </button>
@@ -369,7 +369,7 @@ export const LegendOfMirLogin: React.FC<{ onExit: () => void }> = ({ onExit }) =
             animation: sparkle 1.5s infinite linear;
         }
         .bg-pattern-stone {
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAIklEQVQIW2NkQAKrVq36zwjjgzjIHFbmzMzM/xhwAS4ETQAaJgw8z4BwjgAAAABJRU5ErkJggg==');
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="');
             background-repeat: repeat;
         }
         /* Custom Scrollbar for Mir Theme */
