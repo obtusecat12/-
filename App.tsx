@@ -4,7 +4,12 @@ import { Board } from './types';
 import { BevelBox, RetroButton, Marquee, PixelIcon, Separator, RetroAd } from './components/RetroUI';
 import { LegendOfMirLogin } from './components/LegendOfMirLogin';
 import { SohuMall } from './components/SohuMall';
+import { LoveChatRoom } from './components/LoveChatRoom';
 import { IEFrame } from './components/IEFrame';
+import { ServiceView } from './components/ServiceView';
+import { DigestView } from './components/DigestView';
+import { TradeView } from './components/TradeView';
+import { PersonalView } from './components/PersonalView';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date().toLocaleString());
@@ -26,7 +31,7 @@ const Clock = () => {
   );
 };
 
-const Sidebar = ({ onEnterShop }: { onEnterShop: () => void }) => (
+const Sidebar = ({ onEnterShop, onEnterChat }: { onEnterShop: () => void, onEnterChat: () => void }) => (
     <div className="w-full md:w-[180px] flex flex-col gap-2 shrink-0">
       
       {/* Login */}
@@ -34,11 +39,11 @@ const Sidebar = ({ onEnterShop }: { onEnterShop: () => void }) => (
         <div className="flex flex-col gap-1 text-xs">
           <div className="flex items-center">
             <span className="w-8">ID:</span>
-            <input type="text" className="border border-gray-500 shadow-inner w-full h-5 text-xs px-1 font-simsun" />
+            <input type="text" className="border border-gray-500 shadow-inner w-full h-5 text-xs px-1 font-simsun bg-white text-black" />
           </div>
           <div className="flex items-center">
             <span className="w-8">PW:</span>
-            <input type="password" className="border border-gray-500 shadow-inner w-full h-5 text-xs px-1" />
+            <input type="password" className="border border-gray-500 shadow-inner w-full h-5 text-xs px-1 bg-white text-black" />
           </div>
           <div className="flex justify-center gap-2 mt-1">
             <RetroButton>登录</RetroButton>
@@ -77,7 +82,7 @@ const Sidebar = ({ onEnterShop }: { onEnterShop: () => void }) => (
       <div className="flex flex-col gap-1">
          {/* Nokia Ad - Click to Enter Shop */}
          <RetroAd type="sidebar" variant={1} onClick={onEnterShop} />
-         <RetroAd type="sidebar" variant={2} />
+         <RetroAd type="sidebar" variant={2} onChatEnter={onEnterChat} />
       </div>
 
       {/* Calendar */}
@@ -126,13 +131,30 @@ const TopBanner = ({ onEnterGame }: { onEnterGame: () => void }) => (
     </div>
 );
 
-const Navigation = () => (
-     <div className="flex gap-[2px] my-2 bg-[#dfdfdf] p-[2px] border-t border-white border-b border-gray-600">
-        {['首页', '社区服务', '精华区', '同城交易', '交友中心', '个人服务'].map((item) => (
-           <RetroButton key={item} className="px-2 md:px-3">{item}</RetroButton>
-        ))}
-     </div>
-);
+const Navigation = ({ onNavigate }: { onNavigate: (view: any) => void }) => {
+    const items = [
+        { label: '首页', key: 'home' },
+        { label: '社区服务', key: 'service' },
+        { label: '精华区', key: 'digest' },
+        { label: '同城交易', key: 'trade' },
+        { label: '交友中心', key: 'chat' },
+        { label: '个人服务', key: 'personal' }
+    ];
+
+    return (
+        <div className="flex gap-[2px] my-2 bg-[#dfdfdf] p-[2px] border-t border-white border-b border-gray-600">
+            {items.map((item) => (
+            <RetroButton 
+                key={item.key} 
+                className="px-2 md:px-3"
+                onClick={() => onNavigate(item.key)}
+            >
+                {item.label}
+            </RetroButton>
+            ))}
+        </div>
+    );
+};
 
 const BoardList = ({ handleBoardClick }: { handleBoardClick: (board: Board) => void }) => (
     <div className="mb-4">
@@ -288,8 +310,10 @@ const Footer = ({ visitCount }: { visitCount: number }) => (
     </div>
 );
 
+type ViewState = 'home' | 'board' | 'thread' | 'game' | 'shop' | 'chat' | 'service' | 'digest' | 'trade' | 'personal';
+
 export default function App() {
-  const [currentView, setCurrentView] = useState<'home' | 'board' | 'thread' | 'game' | 'shop'>('home');
+  const [currentView, setCurrentView] = useState<ViewState>('home');
   const [activeBoard, setActiveBoard] = useState<Board | null>(null);
   const [visitCount] = useState(128848);
 
@@ -299,7 +323,12 @@ export default function App() {
       case 'home': return `http://${SITE_URL}/`;
       case 'shop': return 'http://store.sohu.com/';
       case 'game': return 'http://www.mir2.com.cn/index.htm';
+      case 'chat': return 'http://chat.mianyangbbs.cn/room.asp?id=love';
       case 'board': return `http://${SITE_URL}/board.asp?id=${activeBoard?.id || 'unknown'}`;
+      case 'service': return `http://${SITE_URL}/service.asp`;
+      case 'digest': return `http://${SITE_URL}/digest.asp`;
+      case 'trade': return `http://${SITE_URL}/trade.asp`;
+      case 'personal': return `http://${SITE_URL}/usercp.asp`;
       default: return `http://${SITE_URL}/`;
     }
   };
@@ -314,26 +343,22 @@ export default function App() {
     setActiveBoard(null);
   };
 
-  const enterGame = () => {
-    setCurrentView('game');
-  };
-
-  const enterShop = () => {
-    setCurrentView('shop');
-  };
-
-  const exitGameOrShop = () => {
-    setCurrentView('home');
+  const enterGame = () => setCurrentView('game');
+  const enterShop = () => setCurrentView('shop');
+  const enterChat = () => setCurrentView('chat');
+  const exitGameOrShop = () => setCurrentView('home');
+  const handleNavNavigate = (view: ViewState) => {
+    if (view === 'home') {
+        goHome();
+    } else {
+        setCurrentView(view);
+    }
   };
 
   const renderContent = () => {
-    if (currentView === 'game') {
-      return <LegendOfMirLogin onExit={exitGameOrShop} />;
-    }
-
-    if (currentView === 'shop') {
-      return <SohuMall onExit={exitGameOrShop} />;
-    }
+    if (currentView === 'game') return <LegendOfMirLogin onExit={exitGameOrShop} />;
+    if (currentView === 'shop') return <SohuMall onExit={exitGameOrShop} />;
+    if (currentView === 'chat') return <LoveChatRoom onExit={exitGameOrShop} />;
 
     // Wrap the BBS content in a div that simulates the "Body" of the webpage 
     // to apply the background image and color correctly within the IEFrame.
@@ -347,14 +372,18 @@ export default function App() {
         <div className="max-w-[960px] mx-auto p-[4px] bg-[#cccccc] min-h-full shadow-2xl border-l border-r border-white relative">
           <div className="bg-[#eeeeee] p-2 min-h-full border border-gray-500 relative z-10">
             <TopBanner onEnterGame={enterGame} />
-            <Navigation />
+            <Navigation onNavigate={handleNavNavigate} />
 
             {/* Location Breadcrumb */}
             <div className="text-xs my-2 font-simsun flex items-center">
               <PixelIcon type="folder" className="mr-1" />
               当前位置：
-              <a href="#" onClick={goHome}>首页</a> 
+              <a href="#" onClick={goHome} className="hover:text-red-600">首页</a> 
               {activeBoard && <span> &gt; {activeBoard.title}</span>}
+              {currentView === 'service' && <span> &gt; 社区服务</span>}
+              {currentView === 'digest' && <span> &gt; 精华区</span>}
+              {currentView === 'trade' && <span> &gt; 同城交易</span>}
+              {currentView === 'personal' && <span> &gt; 个人服务</span>}
             </div>
 
             <div className="flex flex-col md:flex-row gap-2">
@@ -384,21 +413,30 @@ export default function App() {
                     </div>
 
                     <BoardList handleBoardClick={handleBoardClick} />
+                    <ThreadList filterBoardId={activeBoard?.id} activeBoard={activeBoard} />
                   </>
                 )}
 
-                <ThreadList filterBoardId={activeBoard?.id} activeBoard={activeBoard} />
+                {currentView === 'board' && (
+                     <ThreadList filterBoardId={activeBoard?.id} activeBoard={activeBoard} />
+                )}
+
+                {/* Sub-Views */}
+                {currentView === 'service' && <ServiceView />}
+                {currentView === 'digest' && <DigestView />}
+                {currentView === 'trade' && <TradeView />}
+                {currentView === 'personal' && <PersonalView />}
 
                 {currentView === 'home' && <FriendLinks />}
               </div>
 
               {/* Right Sidebar */}
               <div className="hidden md:block">
-                <Sidebar onEnterShop={enterShop} />
+                <Sidebar onEnterShop={enterShop} onEnterChat={enterChat} />
               </div>
               {/* Mobile Sidebar adjustment */}
               <div className="md:hidden">
-                <Sidebar onEnterShop={enterShop} />
+                <Sidebar onEnterShop={enterShop} onEnterChat={enterChat} />
               </div>
             </div>
 

@@ -270,9 +270,10 @@ interface AdProps {
   type: 'banner' | 'sidebar' | 'button' | 'grid' | 'ranking';
   variant: 1 | 2 | 3;
   onClick?: () => void;
+  onChatEnter?: () => void;
 }
 
-export const RetroAd: React.FC<AdProps> = ({ type, variant, onClick }) => {
+export const RetroAd: React.FC<AdProps> = ({ type, variant, onClick, onChatEnter }) => {
   const borderStyle = "border-t-2 border-l-2 border-white border-b-2 border-r-2 border-black";
   
   if (type === 'banner') {
@@ -509,10 +510,10 @@ export const RetroAd: React.FC<AdProps> = ({ type, variant, onClick }) => {
                   </div>
 
                   <div className="mt-1 text-[10px] grid grid-cols-2 gap-2 px-1">
-                     <button className="bg-gradient-to-b from-pink-200 to-pink-400 border-t border-l border-white border-b border-r border-pink-800 text-pink-900 font-bold py-1 shadow active:translate-y-[1px] active:border-t-pink-800">
+                     <button onClick={onChatEnter} className="bg-gradient-to-b from-pink-200 to-pink-400 border-t border-l border-white border-b border-r border-pink-800 text-pink-900 font-bold py-1 shadow active:translate-y-[1px] active:border-t-pink-800">
                         我是MM
                      </button>
-                     <button className="bg-gradient-to-b from-cyan-200 to-cyan-400 border-t border-l border-white border-b border-r border-cyan-800 text-cyan-900 font-bold py-1 shadow active:translate-y-[1px] active:border-t-cyan-800">
+                     <button onClick={onChatEnter} className="bg-gradient-to-b from-cyan-200 to-cyan-400 border-t border-l border-white border-b border-r border-cyan-800 text-cyan-900 font-bold py-1 shadow active:translate-y-[1px] active:border-t-cyan-800">
                         我是GG
                      </button>
                   </div>

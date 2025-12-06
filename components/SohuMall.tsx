@@ -1,5 +1,5 @@
+
 import React, { useState } from 'react';
-import { RetroButton, PixelIcon } from './RetroUI';
 
 // Workaround for missing marquee type definition in JSX.IntrinsicElements
 const MarqueeElement = 'marquee' as any;
@@ -26,7 +26,7 @@ const SideBox = ({ title, children, color = "orange" }: { title: string, childre
             <div className={`${headerBg} ${headerText} px-2 py-1 font-bold text-xs flex justify-between items-center`}>
                 <span>{title}</span>
             </div>
-            <div className="p-1">
+            <div className="p-1 bg-white">
                 {children}
             </div>
         </div>
@@ -34,7 +34,7 @@ const SideBox = ({ title, children, color = "orange" }: { title: string, childre
 }
 
 const Comment = ({ user, date, content, score }: { user: string, date: string, content: string, score: number }) => (
-    <div className="border-b border-dotted border-[#ccc] py-2">
+    <div className="border-b border-dotted border-[#ccc] py-2 bg-white">
         <div className="flex justify-between bg-[#f0f0f0] px-1 text-[#666]">
             <span>网友：<span className="text-blue-800">{user}</span></span>
             <span>发表于：{date}</span>
@@ -71,7 +71,7 @@ const RetroModal: React.FC<ModalState & { onClose: () => void }> = ({ isOpen, ti
             </button>
         </div>
         {/* Content */}
-        <div className="p-4 flex gap-3">
+        <div className="p-4 flex gap-3 bg-[#d4d0c8]">
             {icon === 'error' && (
               <div className="w-8 h-8 shrink-0 bg-white border border-gray-500 rounded-full flex items-center justify-center text-red-600 font-bold text-xl select-none">!</div>
             )}
@@ -83,10 +83,10 @@ const RetroModal: React.FC<ModalState & { onClose: () => void }> = ({ isOpen, ti
             </div>
         </div>
         {/* Footer Buttons */}
-        <div className="flex justify-center pb-3 px-4">
+        <div className="flex justify-center pb-3 px-4 bg-[#d4d0c8]">
             <button 
               onClick={onClose} 
-              className="px-6 py-1 text-xs border-t-2 border-l-2 border-white border-b-2 border-r-2 border-black active:border-t-black active:border-l-black bg-[#d4d0c8] min-w-[80px] focus:outline-dotted"
+              className="px-6 py-1 text-xs border-t-2 border-l-2 border-white border-b-2 border-r-2 border-black active:border-t-black active:border-l-black bg-[#d4d0c8] min-w-[80px] focus:outline-dotted text-black"
             >
               确定
             </button>
@@ -139,7 +139,7 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white font-simsun text-xs text-[#000] leading-[1.4] cursor-default">
+    <div className="min-h-full bg-white font-simsun text-xs text-[#000] leading-[1.4] cursor-default">
       <RetroModal {...modal} onClose={() => setModal({ ...modal, isOpen: false })} />
 
       {/* 1. Top Portal Bar */}
@@ -163,7 +163,7 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
       </div>
 
       {/* 2. Brand Header & Ad Banner */}
-      <div className="max-w-[800px] mx-auto py-2">
+      <div className="max-w-[800px] mx-auto py-2 bg-white">
           {/* Top Banner Ad 468x60 - Updated from bg-black to gradient blue */}
           <div className="flex justify-center mb-2">
              <div className="w-[468px] h-[60px] bg-gradient-to-r from-[#000080] to-[#104E8B] text-white flex flex-col items-center justify-center border-2 border-white outline outline-1 outline-[#999] cursor-pointer shadow-sm relative overflow-hidden group">
@@ -191,12 +191,12 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
              {/* Search Box */}
              <div className="bg-[#ffffe0] border border-[#ff9900] p-1 flex flex-col gap-1 items-end shadow-sm">
                  <div className="flex items-center gap-1">
-                    <select className="border border-[#999] text-xs h-[18px]">
+                    <select className="border border-[#999] text-xs h-[18px] bg-white text-black">
                         <option>所有分类</option>
                         <option>手机通讯</option>
                         <option>IT数码</option>
                     </select>
-                    <input type="text" className="border border-[#999] h-[18px] w-32" />
+                    <input type="text" className="border border-[#999] h-[18px] w-32 bg-white text-black" />
                     <button className="bg-[#ff9900] text-white border border-[#cc7a00] px-2 text-xs font-bold h-[20px]">搜 索</button>
                  </div>
                  <div className="text-[10px] text-[#666]">
@@ -228,7 +228,7 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
       </div>
 
       {/* 5. Main Content Area - Table Layout Simulation */}
-      <div className="max-w-[800px] mx-auto mt-2 flex gap-2 px-2 pb-8">
+      <div className="max-w-[800px] mx-auto mt-2 flex gap-2 px-2 pb-8 bg-white">
          
          {/* --- LEFT SIDEBAR (160px) --- */}
          <div className="w-[160px] shrink-0 flex flex-col gap-2">
@@ -238,15 +238,15 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
                <div className="flex flex-col gap-1 text-[11px]">
                   <div className="flex items-center justify-between">
                      <span>帐号:</span>
-                     <input type="text" className="w-[100px] border border-[#ccc] h-[16px]" />
+                     <input type="text" className="w-[100px] border border-[#ccc] h-[16px] bg-white text-black" />
                   </div>
                   <div className="flex items-center justify-between">
                      <span>密码:</span>
-                     <input type="password" className="w-[100px] border border-[#ccc] h-[16px]" />
+                     <input type="password" className="w-[100px] border border-[#ccc] h-[16px] bg-white text-black" />
                   </div>
                   <div className="flex justify-center gap-2 mt-1">
-                     <button className="bg-[#ddd] border border-[#999] px-2 shadow-sm active:translate-y-[1px]" onClick={showBusy}>登录</button>
-                     <button className="bg-[#ddd] border border-[#999] px-2 shadow-sm active:translate-y-[1px]" onClick={showBusy}>注册</button>
+                     <button className="bg-[#ddd] border border-[#999] px-2 shadow-sm active:translate-y-[1px] text-black" onClick={showBusy}>登录</button>
+                     <button className="bg-[#ddd] border border-[#999] px-2 shadow-sm active:translate-y-[1px] text-black" onClick={showBusy}>注册</button>
                   </div>
                   <div className="text-center mt-1 text-blue-800 underline cursor-pointer" onClick={showBusy}>忘记密码?</div>
                </div>
@@ -267,12 +267,12 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
                   <div className="font-bold mb-1">您最喜欢的手机品牌?</div>
                   {!pollVoted ? (
                       <div className="flex flex-col gap-1">
-                        <label className="flex items-center gap-1 cursor-pointer hover:bg-[#eee]"><input type="radio" name="poll" /> 诺基亚 (Nokia)</label>
-                        <label className="flex items-center gap-1 cursor-pointer hover:bg-[#eee]"><input type="radio" name="poll" /> 摩托罗拉</label>
-                        <label className="flex items-center gap-1 cursor-pointer hover:bg-[#eee]"><input type="radio" name="poll" /> 爱立信</label>
-                        <label className="flex items-center gap-1 cursor-pointer hover:bg-[#eee]"><input type="radio" name="poll" /> 西门子</label>
+                        <label className="flex items-center gap-1 cursor-pointer hover:bg-[#eee]"><input type="radio" name="poll" className="bg-white" /> 诺基亚 (Nokia)</label>
+                        <label className="flex items-center gap-1 cursor-pointer hover:bg-[#eee]"><input type="radio" name="poll" className="bg-white" /> 摩托罗拉</label>
+                        <label className="flex items-center gap-1 cursor-pointer hover:bg-[#eee]"><input type="radio" name="poll" className="bg-white" /> 爱立信</label>
+                        <label className="flex items-center gap-1 cursor-pointer hover:bg-[#eee]"><input type="radio" name="poll" className="bg-white" /> 西门子</label>
                         <div className="text-center mt-1">
-                            <button onClick={() => setPollVoted(true)} className="border border-gray-500 bg-[#e0e0e0] px-2 text-[10px]">投票</button>
+                            <button onClick={() => setPollVoted(true)} className="border border-gray-500 bg-[#e0e0e0] px-2 text-[10px] text-black">投票</button>
                         </div>
                       </div>
                   ) : (
@@ -303,7 +303,7 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
          </div>
 
          {/* --- CENTER CONTENT (Main) --- */}
-         <div className="flex-1 min-w-0">
+         <div className="flex-1 min-w-0 bg-white">
             
             {/* Breadcrumb */}
             <div className="mb-2 text-[#666]">
@@ -357,7 +357,7 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
                        
                        <div className="flex items-center gap-2 mt-2">
                           <span className="text-[#666]">购买数量:</span>
-                          <input type="text" defaultValue="1" className="w-8 border border-[#999] text-center" />
+                          <input type="text" defaultValue="1" className="w-8 border border-[#999] text-center bg-white text-black" />
                           <span className="text-[#666] text-[10px]">(库存: 充足)</span>
                        </div>
 
@@ -366,7 +366,7 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
                                 onClick={showBuyError}
                                 className="bg-[#ff3300] bg-gradient-to-b from-[#ff6600] to-[#cc0000] text-white font-bold px-4 py-1 border-2 border-[#fff] shadow-[2px_2px_0_#999] active:border-[#999] active:shadow-none active:translate-y-[2px]"
                             >
-                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAxaDRsMi42OCAxMy4zOWEyIDIgMCAwIDAgMiAxLjYxaDkuNzJhMiAyIDAgMCAwIDItMS42MUwyMyA2SDZNMTAgMjFhMiAyIDAgMSAwIDQtNCAyIDIgMCAwIDAtNCA0bTkgMGEyIDIgMCAxIDAgNC00IDIgMiAwIDAgMC00IDQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==" className="inline-block align-bottom mr-1" />
+                                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMSAxaDRsMi42OCAxMy4zOWEyIDIgMCAwIDAgMiAxLjYxaDkuNzJhMiAyIDAgMCAwIDItMS42MUwyMyA2SDZNMTAgMjFhMiAyIDAgMSAwIDQtNCAyIDIgMiAwIDAgMC00IDQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==" className="inline-block align-bottom mr-1" />
                                 立即购买
                            </button>
                            <button 
@@ -460,7 +460,7 @@ export const SohuMall: React.FC<{ onExit: () => void }> = ({ onExit }) => {
                                 <span className="font-bold">综合评分:</span> 
                                 <span className="text-red-600 text-lg mx-2">★★★★☆</span> 
                                 <span className="text-[#666]">4.5/5.0</span>
-                                <button className="ml-4 border border-[#999] bg-white px-2 text-[10px]">我要评论</button>
+                                <button className="ml-4 border border-[#999] bg-white px-2 text-[10px] text-black">我要评论</button>
                             </div>
                             <Comment 
                                 user="北京网友" 

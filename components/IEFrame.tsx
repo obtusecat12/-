@@ -318,7 +318,7 @@ export const IEFrame: React.FC<{
 
       {/* 5. Main Content Area (Viewport) */}
       <div className="flex-1 relative overflow-auto bg-[#808080] border-t-2 border-l-2 border-[#404040] border-b border-r border-white scrollbar-classic">
-          <div className="w-full h-full bg-white relative">
+          <div className="w-full min-h-full bg-white relative isolate">
              {children}
           </div>
       </div>
